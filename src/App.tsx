@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Analytics } from '@vercel/analytics/react';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
 import { CaseStudiesSection } from './components/sections/CaseStudiesSection';
@@ -197,6 +198,7 @@ function App() {
         message={toastState.message}
         onClose={() => setToastState((current) => ({ ...current, open: false }))}
       />
+      <Analytics />
     </div>
   );
 }
