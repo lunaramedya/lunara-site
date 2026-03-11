@@ -1,5 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
 import { pricingPlans } from '../../data/siteData';
+import type { PricingPlan } from '../../types/site';
 import { cn } from '../../utils/cn';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
@@ -7,7 +8,7 @@ import { Button } from '../ui/Button';
 import { SectionTitle } from '../ui/SectionTitle';
 
 type PackagesSectionProps = {
-  onOpenLeadModal: () => void;
+  onOpenLeadModal: (plan: PricingPlan) => void;
 };
 
 export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
@@ -58,7 +59,11 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
               ))}
             </ul>
 
-            <Button className="mt-6 w-full" variant={plan.recommended ? 'primary' : 'outline'} onClick={onOpenLeadModal}>
+            <Button
+              className="mt-6 w-full"
+              variant={plan.recommended ? 'primary' : 'outline'}
+              onClick={() => onOpenLeadModal(plan)}
+            >
               Teklif Al
             </Button>
           </article>

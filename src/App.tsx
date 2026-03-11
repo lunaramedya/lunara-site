@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Analytics } from '@vercel/analytics/react';
+import type { PricingPlan } from './types/site';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
 import { CaseStudiesSection } from './components/sections/CaseStudiesSection';
@@ -39,6 +40,7 @@ const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'c
 function App() {
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);
   const [contactEmphasized, setContactEmphasized] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
   const [toastState, setToastState] = useState<{
     open: boolean;
     type: 'success' | 'error';
@@ -78,9 +80,15 @@ function App() {
     [scrollTo],
   );
 
-  const openLeadModal = useCallback(() => {
+  const openLeadModal = useCallback((plan?: PricingPlan | null) => {
+    setSelectedPlan(plan ?? null);
+    reset({
+      name: '',
+      phone: '',
+      service: plan ? `${plan.name} - ${plan.priceTRY}` : '',
+    });
     setLeadModalOpen(true);
-  }, []);
+  }, [reset]);
 
   useEffect(() => {
     if (!contactEmphasized) {
@@ -97,9 +105,12 @@ function App() {
         kind: 'lead',
         name: values.name,
         phone: values.phone,
-        service: values.service,
+        service: selectedPlan
+          ? `Paket Talebi: ${selectedPlan.name} / ${selectedPlan.priceTRY}`
+          : values.service,
       });
       reset();
+      setSelectedPlan(null);
       setLeadModalOpen(false);
       setToastState({
         open: true,
@@ -142,7 +153,15 @@ function App() {
       <Footer onNavigate={navigateTo} />
       <FloatingWhatsApp />
 
-      <Modal open={isLeadModalOpen} onClose={() => setLeadModalOpen(false)} title="Teklif Formu">
+      <Modal
+        open={isLeadModalOpen}
+        onClose={() => {
+          setLeadModalOpen(false);
+          setSelectedPlan(null);
+          reset();
+        }}
+        title={selectedPlan ? `${selectedPlan.priceLabel ?? 'Paket'} Teklif Formu` : 'Teklif Formu'}
+      >
         <form className="space-y-4" onSubmit={handleSubmit(handleLeadSubmit)} noValidate>
           <Input
             id="lead-name"
@@ -166,24 +185,34 @@ function App() {
             })}
           />
 
-          <div className="space-y-2">
-            <label htmlFor="lead-service" className="block text-sm font-medium text-[var(--color-ink)]">
-              İlgilendiğiniz Hizmet
-            </label>
-            <select
-              id="lead-service"
-              className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
-              {...register('service', { required: 'Hizmet seçimi zorunludur.' })}
-            >
-              <option value="">Seçiniz</option>
-              {leadServiceOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {errors.service?.message ? <p className="text-xs text-rose-600">{errors.service.message}</p> : null}
-          </div>
+          {selectedPlan ? (
+            <div className="rounded-[22px] border border-[var(--color-border)] bg-white/6 p-4 text-sm text-[var(--color-muted)]">
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-primary)]">
+                Seçilen Paket
+              </span>
+              <span className="mt-2 block text-lg font-semibold text-[var(--color-ink)]">{selectedPlan.name}</span>
+              <span className="mt-1 block text-sm text-[var(--color-primary-strong)]">{selectedPlan.priceTRY}</span>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <label htmlFor="lead-service" className="block text-sm font-medium text-[var(--color-ink)]">
+                İlgilendiğiniz Hizmet
+              </label>
+              <select
+                id="lead-service"
+                className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+                {...register('service', { required: 'Hizmet seçimi zorunludur.' })}
+              >
+                <option value="">Seçiniz</option>
+                {leadServiceOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {errors.service?.message ? <p className="text-xs text-rose-600">{errors.service.message}</p> : null}
+            </div>
+          )}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? 'Gönderiliyor...' : 'Teklif Gönder'}
