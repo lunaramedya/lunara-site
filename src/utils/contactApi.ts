@@ -13,6 +13,10 @@ export type ContactApiPayload =
   | (BasePayload & {
       kind: 'lead';
       service: string;
+      planId?: string;
+      planName?: string;
+      planPrice?: string;
+      source?: 'package_card' | 'generic_cta';
     });
 
 type ContactApiResponse = {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import type { PricingPlan } from './types/site';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
@@ -27,13 +28,25 @@ type LeadFormValues = {
   service: string;
 };
 
-const leadServiceOptions = [
+const defaultLeadServiceOptions = [
   'Web Site Tasarımı',
   'Landing Page & Funnel',
   'Meta Ads Yönetimi',
   'Sosyal Medya Reklamcılığı',
   'Tam Kapsam Çalışma',
 ];
+
+const planScopedServiceOptions: Record<string, string[]> = {
+  starter: ['Web Site Tasarımı', 'Landing Page & Funnel', 'Meta Ads Yönetimi'],
+  growth: ['Web Site Tasarımı', 'Landing Page & Funnel', 'Meta Ads Yönetimi', 'Sosyal Medya Reklamcılığı'],
+  signature: [
+    'Web Site Tasarımı',
+    'Landing Page & Funnel',
+    'Meta Ads Yönetimi',
+    'Sosyal Medya Reklamcılığı',
+    'Tam Kapsam Çalışma',
+  ],
+};
 
 const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'contact'];
 
@@ -81,11 +94,13 @@ function App() {
   );
 
   const openLeadModal = useCallback((plan?: PricingPlan | null) => {
+    const options = plan ? (planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions) : defaultLeadServiceOptions;
+
     setSelectedPlan(plan ?? null);
     reset({
       name: '',
       phone: '',
-      service: plan ? `${plan.name} - ${plan.priceTRY}` : '',
+      service: options[0] ?? '',
     });
     setLeadModalOpen(true);
   }, [reset]);
@@ -105,9 +120,11 @@ function App() {
         kind: 'lead',
         name: values.name,
         phone: values.phone,
-        service: selectedPlan
-          ? `Paket Talebi: ${selectedPlan.name} / ${selectedPlan.priceTRY}`
-          : values.service,
+        service: values.service,
+        planId: selectedPlan?.id,
+        planName: selectedPlan?.name,
+        planPrice: selectedPlan?.priceTRY,
+        source: selectedPlan ? 'package_card' : 'generic_cta',
       });
       reset();
       setSelectedPlan(null);
@@ -127,6 +144,10 @@ function App() {
       });
     }
   };
+
+  const activeLeadServiceOptions = selectedPlan
+    ? (planScopedServiceOptions[selectedPlan.id] ?? defaultLeadServiceOptions)
+    : defaultLeadServiceOptions;
 
   return (
     <div className="relative overflow-x-clip bg-[var(--color-bg)]">
@@ -193,26 +214,26 @@ function App() {
               <span className="mt-2 block text-lg font-semibold text-[var(--color-ink)]">{selectedPlan.name}</span>
               <span className="mt-1 block text-sm text-[var(--color-primary-strong)]">{selectedPlan.priceTRY}</span>
             </div>
-          ) : (
-            <div className="space-y-2">
-              <label htmlFor="lead-service" className="block text-sm font-medium text-[var(--color-ink)]">
-                İlgilendiğiniz Hizmet
-              </label>
-              <select
-                id="lead-service"
-                className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
-                {...register('service', { required: 'Hizmet seçimi zorunludur.' })}
-              >
-                <option value="">Seçiniz</option>
-                {leadServiceOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.service?.message ? <p className="text-xs text-rose-600">{errors.service.message}</p> : null}
-            </div>
-          )}
+          ) : null}
+
+          <div className="space-y-2">
+            <label htmlFor="lead-service" className="block text-sm font-medium text-[var(--color-ink)]">
+              {selectedPlan ? 'Bu paket için uygun hizmet' : 'İlgilendiğiniz Hizmet'}
+            </label>
+            <select
+              id="lead-service"
+              className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+              {...register('service', { required: 'Hizmet seçimi zorunludur.' })}
+            >
+              <option value="">Seçiniz</option>
+              {activeLeadServiceOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            {errors.service?.message ? <p className="text-xs text-rose-600">{errors.service.message}</p> : null}
+          </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? 'Gönderiliyor...' : 'Teklif Gönder'}
@@ -228,6 +249,7 @@ function App() {
         onClose={() => setToastState((current) => ({ ...current, open: false }))}
       />
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }

@@ -15,6 +15,10 @@ export type ContactPayload = BasePayload & {
 export type LeadPayload = BasePayload & {
   kind: 'lead';
   service?: string;
+  planId?: string;
+  planName?: string;
+  planPrice?: string;
+  source?: 'package_card' | 'generic_cta';
 };
 
 export type MailPayload = ContactPayload | LeadPayload;
@@ -74,10 +78,33 @@ function validatePayload(payload: unknown): payload is MailPayload {
   }
 
   if (data.kind === 'lead') {
-    return ensureText(data.name, 2) && ensureText(data.phone, 10) && ensureText(data.service, 2);
+    const sourceValid =
+      data.source === undefined || data.source === 'package_card' || data.source === 'generic_cta';
+
+    return (
+      ensureText(data.name, 2) &&
+      ensureText(data.phone, 10) &&
+      ensureText(data.service, 2) &&
+      (!data.planId || ensureText(data.planId, 2)) &&
+      (!data.planName || ensureText(data.planName, 2)) &&
+      (!data.planPrice || ensureText(data.planPrice, 2)) &&
+      sourceValid
+    );
   }
 
   return false;
+}
+
+function formatLeadSource(source: LeadPayload['source']) {
+  if (source === 'package_card') {
+    return 'Paket karti CTA';
+  }
+
+  if (source === 'generic_cta') {
+    return 'Genel teklif CTA';
+  }
+
+  return '-';
 }
 
 function buildMail(payload: MailPayload) {
@@ -119,13 +146,18 @@ function buildMail(payload: MailPayload) {
     };
   }
 
-  const subject = `Yeni Teklif Talebi - ${payload.service}`;
+  const subject = payload.planName
+    ? `Yeni Teklif Talebi - ${payload.planName}`
+    : `Yeni Teklif Talebi - ${payload.service}`;
   const text = [
     'Lunara Medya teklif modalı üzerinden yeni bir talep geldi.',
     '',
     `Ad Soyad: ${payload.name}`,
     `Telefon: ${payload.phone}`,
+    `Secilen Paket: ${payload.planName ?? '-'}`,
+    `Paket Fiyati: ${payload.planPrice ?? '-'}`,
     `İlgilendiği Hizmet: ${payload.service}`,
+    `Tiklama Kaynagi: ${formatLeadSource(payload.source)}`,
   ].join('\n');
 
   const html = `
@@ -134,7 +166,10 @@ function buildMail(payload: MailPayload) {
       <table style="border-collapse:collapse;width:100%;max-width:680px">
         <tr><td style="padding:8px 0;font-weight:700">Ad Soyad</td><td style="padding:8px 0">${escapeHtml(payload.name ?? '')}</td></tr>
         <tr><td style="padding:8px 0;font-weight:700">Telefon</td><td style="padding:8px 0">${escapeHtml(payload.phone ?? '')}</td></tr>
+        <tr><td style="padding:8px 0;font-weight:700">Secilen Paket</td><td style="padding:8px 0">${escapeHtml(payload.planName ?? '-')}</td></tr>
+        <tr><td style="padding:8px 0;font-weight:700">Paket Fiyati</td><td style="padding:8px 0">${escapeHtml(payload.planPrice ?? '-')}</td></tr>
         <tr><td style="padding:8px 0;font-weight:700">İlgilendiği Hizmet</td><td style="padding:8px 0">${escapeHtml(payload.service ?? '')}</td></tr>
+        <tr><td style="padding:8px 0;font-weight:700">Tiklama Kaynagi</td><td style="padding:8px 0">${escapeHtml(formatLeadSource(payload.source))}</td></tr>
       </table>
     </div>
   `;
