@@ -1,4 +1,4 @@
-import { readJsonBody, submitMailRequest } from '../server/contact-mail';
+import { readJsonBody, submitMailRequest } from '../server/contact-mail.js';
 
 type RequestLike = AsyncIterable<Uint8Array> & {
   method?: string;
