@@ -8,7 +8,7 @@ import { Button } from '../ui/Button';
 import { SectionTitle } from '../ui/SectionTitle';
 
 type PackagesSectionProps = {
-  onOpenLeadModal: (plan: PricingPlan) => void;
+  onOpenLeadModal: (plan: PricingPlan, source?: 'package_card') => void;
 };
 
 export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
@@ -62,7 +62,7 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
             <Button
               className="mt-6 w-full"
               variant={plan.recommended ? 'primary' : 'outline'}
-              onClick={() => onOpenLeadModal(plan)}
+              onClick={() => onOpenLeadModal(plan, 'package_card')}
             >
               Teklif Al
             </Button>

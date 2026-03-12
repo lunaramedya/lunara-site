@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import type { PricingPlan } from './types/site';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
@@ -54,6 +52,7 @@ function App() {
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);
   const [contactEmphasized, setContactEmphasized] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
+  const [leadSource, setLeadSource] = useState<'package_card' | 'generic_cta'>('generic_cta');
   const [toastState, setToastState] = useState<{
     open: boolean;
     type: 'success' | 'error';
@@ -93,10 +92,11 @@ function App() {
     [scrollTo],
   );
 
-  const openLeadModal = useCallback((plan?: PricingPlan | null) => {
+  const openLeadModal = useCallback((plan?: PricingPlan | null, source: 'package_card' | 'generic_cta' = 'generic_cta') => {
     const options = plan ? (planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions) : defaultLeadServiceOptions;
 
     setSelectedPlan(plan ?? null);
+    setLeadSource(source);
     reset({
       name: '',
       phone: '',
@@ -124,10 +124,11 @@ function App() {
         planId: selectedPlan?.id,
         planName: selectedPlan?.name,
         planPrice: selectedPlan?.priceTRY,
-        source: selectedPlan ? 'package_card' : 'generic_cta',
+        source: leadSource,
       });
       reset();
       setSelectedPlan(null);
+      setLeadSource('generic_cta');
       setLeadModalOpen(false);
       setToastState({
         open: true,
@@ -179,6 +180,7 @@ function App() {
         onClose={() => {
           setLeadModalOpen(false);
           setSelectedPlan(null);
+          setLeadSource('generic_cta');
           reset();
         }}
         title={selectedPlan ? `${selectedPlan.priceLabel ?? 'Paket'} Teklif Formu` : 'Teklif Formu'}
@@ -248,8 +250,6 @@ function App() {
         message={toastState.message}
         onClose={() => setToastState((current) => ({ ...current, open: false }))}
       />
-      <Analytics />
-      <SpeedInsights />
     </div>
   );
 }

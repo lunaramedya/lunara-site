@@ -80,6 +80,7 @@ function validatePayload(payload: unknown): payload is MailPayload {
   if (data.kind === 'lead') {
     const sourceValid =
       data.source === undefined || data.source === 'package_card' || data.source === 'generic_cta';
+    const packageSourceHasPlan = data.source !== 'package_card' || (ensureText(data.planName, 2) && ensureText(data.planPrice, 2));
 
     return (
       ensureText(data.name, 2) &&
@@ -88,7 +89,8 @@ function validatePayload(payload: unknown): payload is MailPayload {
       (!data.planId || ensureText(data.planId, 2)) &&
       (!data.planName || ensureText(data.planName, 2)) &&
       (!data.planPrice || ensureText(data.planPrice, 2)) &&
-      sourceValid
+      sourceValid &&
+      packageSourceHasPlan
     );
   }
 
@@ -97,11 +99,11 @@ function validatePayload(payload: unknown): payload is MailPayload {
 
 function formatLeadSource(source: LeadPayload['source']) {
   if (source === 'package_card') {
-    return 'Paket karti CTA';
+    return 'Paket kutusu > Teklif Al';
   }
 
   if (source === 'generic_cta') {
-    return 'Genel teklif CTA';
+    return 'Genel CTA (Hero / Navbar / Footer)';
   }
 
   return '-';
@@ -147,7 +149,7 @@ function buildMail(payload: MailPayload) {
   }
 
   const subject = payload.planName
-    ? `Yeni Teklif Talebi - ${payload.planName}`
+    ? `Yeni Teklif Talebi - ${payload.planName} (${payload.planPrice ?? '-'})`
     : `Yeni Teklif Talebi - ${payload.service}`;
   const text = [
     'Lunara Medya teklif modalı üzerinden yeni bir talep geldi.',
