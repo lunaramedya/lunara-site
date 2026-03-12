@@ -12,18 +12,26 @@ const referenceLogoMap = {
   master: '/master-logo.png',
 } as const;
 
+const referenceLogoDimensions = {
+  loli: { width: 1080, height: 1350 },
+  master: { width: 400, height: 62 },
+} as const;
+
 export function BrandMark({ brand, className, inverse = false, compact = false }: BrandMarkProps) {
   if (brand === 'lunara') {
     return (
       <div className={cn('inline-flex items-center gap-3', className)}>
         <img
-          src="/lunara-logo.jpg"
+          src="/lunara-logo.webp"
           alt="Lunara Medya logo"
+          width={56}
+          height={56}
           className={cn(
             'rounded-full object-cover shadow-[0_0_40px_rgba(114,201,255,0.2)]',
             compact ? 'h-10 w-10 sm:h-12 sm:w-12' : 'h-12 w-12 sm:h-14 sm:w-14',
           )}
           loading="eager"
+          decoding="async"
         />
         <div className="space-y-1">
           <p
@@ -52,6 +60,8 @@ export function BrandMark({ brand, className, inverse = false, compact = false }
     <img
       src={referenceLogoMap[brand]}
       alt={brand === 'loli' ? 'Loli Nail Studio logo' : 'Master Service logo'}
+      width={referenceLogoDimensions[brand].width}
+      height={referenceLogoDimensions[brand].height}
       className={cn(
         'h-auto max-w-full object-contain',
         brand === 'master'
@@ -64,6 +74,7 @@ export function BrandMark({ brand, className, inverse = false, compact = false }
         className,
       )}
       loading="lazy"
+      decoding="async"
     />
   );
 }

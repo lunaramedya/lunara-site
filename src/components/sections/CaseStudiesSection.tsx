@@ -23,6 +23,7 @@ export function CaseStudiesSection() {
           const imageClass = isMaster
             ? 'w-full max-w-[540px] rounded-[20px] object-contain'
             : 'h-full w-full rounded-[20px] object-contain';
+          const dimensions = isMaster ? { width: 400, height: 62 } : { width: 1080, height: 1350 };
 
           return (
             <motion.div
@@ -61,7 +62,15 @@ export function CaseStudiesSection() {
                 </div>
 
                 <div className={frameClass}>
-                  <img src={item.image} alt={item.title} className={imageClass} loading="lazy" />
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    width={dimensions.width}
+                    height={dimensions.height}
+                    className={imageClass}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
 
                 <h3

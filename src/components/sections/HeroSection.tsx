@@ -96,10 +96,14 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
             <div className="absolute inset-[56px] rounded-full border border-[rgba(143,238,255,0.18)] sm:inset-[78px] lg:inset-[88px]" />
             <div className="absolute h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,_rgba(143,238,255,0.24),_transparent_62%)] sm:h-[300px] sm:w-[300px] lg:h-[340px] lg:w-[340px]" />
             <img
-              src="/lunara-logo.jpg"
+              src="/lunara-logo.webp"
               alt="Lunara Medya logo"
+              width={320}
+              height={320}
               className="relative z-10 h-[200px] w-[200px] rounded-full object-cover shadow-[0_0_70px_rgba(120,203,255,0.24)] sm:h-[280px] sm:w-[280px] md:h-[300px] md:w-[300px] lg:h-[320px] lg:w-[320px]"
               loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
 
             <div className="absolute left-4 top-4 max-w-[calc(100%-2rem)] rounded-[20px] border border-[var(--color-border)] bg-[rgba(8,16,30,0.84)] px-3 py-3 backdrop-blur-xl sm:left-6 sm:top-6 sm:max-w-none sm:rounded-[24px] sm:px-4">
