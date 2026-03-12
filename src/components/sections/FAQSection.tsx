@@ -10,11 +10,11 @@ export function FAQSection() {
   const [openId, setOpenId] = useState<string | null>(faqs[0]?.id ?? null);
 
   return (
-    <SectionContainer>
+    <SectionContainer id="faq" className="scroll-mt-24">
       <SectionTitle
         badge={<span className="inline-flex items-center rounded-full border border-[var(--color-border-strong)] bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">FAQ</span>}
-        title="Sık sorulanlar"
-        subtitle="Karar vermeden once ihtiyac duyulan temel basliklari burada netlestirdik."
+        title="Karar vermeden önce en çok sorulanlar"
+        subtitle="Fiyat, süreç, reklam bütçesi ve teslim modeliyle ilgili kritik soruları net şekilde cevapladık."
       />
 
       <div className="mt-8 space-y-3">

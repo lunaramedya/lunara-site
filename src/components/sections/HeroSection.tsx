@@ -33,20 +33,21 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
                 className="max-w-4xl text-4xl leading-[0.94] tracking-[-0.04em] text-[var(--color-ink)] sm:text-5xl md:text-6xl lg:text-7xl"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                Markanızı sıradan görünümden çıkaran
+                Premium görünüm, net mesaj ve
                 <span className="block bg-[linear-gradient(135deg,var(--color-primary),#d7d5ff_54%,var(--color-accent))] bg-clip-text text-transparent">
-                  premium web ve reklam sistemleri
+                  daha fazla talep üreten sistemler
                 </span>
               </h1>
               <p className="max-w-2xl text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg md:leading-8">
-                Lunara Medya; web site tasarımı, landing page kurgusu, Meta Ads yönetimi ve sosyal medya reklamcılığı
-                ile markaların dijitalde daha güçlü görünmesini ve daha fazla talep toplamasını sağlar.
+                Lunara Medya; hizmet ve premium algı odaklı markalar için web sitesi, landing page, Meta Ads ve
+                kreatif sistemleri tek çatı altında kurar. Amaç yalnızca şık görünmek değil; daha güçlü güven, daha
+                net başvuru ve daha yüksek dönüşümdür.
               </p>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button size="lg" onClick={onOpenLeadModal}>
-                Teklif Al <ArrowRight size={18} />
+                Ücretsiz Ön Analiz Al <ArrowRight size={18} />
               </Button>
               <Button
                 href={`https://wa.me/${contactInfo.whatsapp}`}
@@ -59,7 +60,7 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
               </Button>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 md:max-w-2xl md:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 md:max-w-3xl lg:grid-cols-5">
               {stats.map((item) => (
                 <div
                   key={item}
@@ -75,7 +76,7 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
               onClick={() => onNavigate('services')}
               className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-primary)] transition hover:text-white"
             >
-              <Sparkles size={16} /> Hizmet yapımızı keşfet
+              <Sparkles size={16} /> Hizmet katmanlarını keşfet
             </button>
           </motion.div>
         </div>

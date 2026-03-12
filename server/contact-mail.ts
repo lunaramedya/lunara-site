@@ -9,6 +9,9 @@ export type ContactPayload = BasePayload & {
   kind: 'contact';
   company?: string;
   email?: string;
+  instagram?: string;
+  interestedService?: string;
+  monthlyAdBudget?: string;
   message?: string;
 };
 
@@ -73,6 +76,9 @@ function validatePayload(payload: unknown): payload is MailPayload {
       ensureText(data.company, 2) &&
       ensureText(data.phone, 10) &&
       ensureText(data.email, 5) &&
+      ensureText(data.instagram, 2) &&
+      ensureText(data.interestedService, 2) &&
+      ensureText(data.monthlyAdBudget, 2) &&
       ensureText(data.message, 10)
     );
   }
@@ -119,6 +125,9 @@ function buildMail(payload: MailPayload) {
       `Marka / Firma: ${payload.company}`,
       `Telefon: ${payload.phone}`,
       `E-posta: ${payload.email}`,
+      `Instagram: ${payload.instagram}`,
+      `İlgilendiği Hizmet: ${payload.interestedService}`,
+      `Aylık Reklam Bütçesi: ${payload.monthlyAdBudget}`,
       '',
       'Proje Notu:',
       payload.message,
@@ -132,6 +141,9 @@ function buildMail(payload: MailPayload) {
           <tr><td style="padding:8px 0;font-weight:700">Marka / Firma</td><td style="padding:8px 0">${escapeHtml(payload.company ?? '')}</td></tr>
           <tr><td style="padding:8px 0;font-weight:700">Telefon</td><td style="padding:8px 0">${escapeHtml(payload.phone ?? '')}</td></tr>
           <tr><td style="padding:8px 0;font-weight:700">E-posta</td><td style="padding:8px 0">${escapeHtml(payload.email ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">Instagram</td><td style="padding:8px 0">${escapeHtml(payload.instagram ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">İlgilendiği Hizmet</td><td style="padding:8px 0">${escapeHtml(payload.interestedService ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">Aylık Reklam Bütçesi</td><td style="padding:8px 0">${escapeHtml(payload.monthlyAdBudget ?? '')}</td></tr>
         </table>
         <div style="margin-top:20px;padding:18px;border-radius:16px;background:#eef6ff;border:1px solid #c7d2fe">
           <div style="font-weight:700;margin-bottom:10px">Proje Notu</div>

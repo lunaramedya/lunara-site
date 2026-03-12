@@ -18,13 +18,16 @@ export const navItems: NavItem[] = [
   { id: 'cases', label: 'Referanslar', href: '#cases' },
   { id: 'packages', label: 'Paketler', href: '#packages' },
   { id: 'process', label: 'Süreç', href: '#process' },
+  { id: 'faq', label: 'SSS', href: '#faq' },
   { id: 'contact', label: 'İletişim', href: '#contact' },
 ];
 
 export const stats = [
-  'Dijital büyümenin yeni adresi',
-  'Premium web tasarımı',
-  'Meta Ads ve sosyal medya reklamcılığı',
+  'Premium web & landing page',
+  'Meta Ads & dönüşüm kurgusu',
+  'WhatsApp ve form odaklı akış',
+  'Net süreç, kontrollü teslim',
+  '15K - 35K proje modelleri',
 ];
 
 export const referenceBrands: ReferenceBrand[] = [
@@ -83,24 +86,24 @@ export const serviceCategories: ServiceCategory[] = [
         title: 'Web Site Tasarımı',
         icon: 'monitor-smartphone',
         description:
-          'Markanızın seviyesini ilk bakışta hissettiren, hızlı açılan ve premium görünen kurumsal ya da landing page deneyimleri tasarlıyoruz.',
-        benefits: ['Mobilde kusursuz deneyim', 'Markaya özel UI dili', 'Yüksek algı oluşturan sayfa kompozisyonu'],
+          'Markanızı daha güvenilir ve daha pahalı algılatan, kullanıcı kararını hızlandıran premium web deneyimleri kuruyoruz.',
+        benefits: ['İlk izlenimde güven artışı', 'Mobilde hızlı ve akıcı deneyim', 'Başvuru kararını hızlandıran içerik akışı'],
       },
       {
         id: 'landing-system',
         title: 'Landing Page & Funnel',
         icon: 'workflow',
         description:
-          'Reklam trafiğini boşa harcamayan, başvuru ve WhatsApp aksiyonlarını net biçimde yöneten dönüşüm odaklı sayfa yapıları kuruyoruz.',
-        benefits: ['Form ve WhatsApp entegrasyonu', 'Dönüşüm odaklı akışlar', 'Tek teklif yerine net talep toplama'],
+          'Reklam trafiğini boşa harcamayan, teklif ve WhatsApp aksiyonunu netleştiren dönüşüm odaklı landing sistemleri oluşturuyoruz.',
+        benefits: ['Yüksek niyetli trafiği daha iyi dönüştürme', 'Form + WhatsApp + teklif entegrasyonu', 'Tek amaçlı sayfa mimarisi'],
       },
       {
         id: 'creative-direction',
         title: 'Art Direction & Kreatif',
         icon: 'palette',
         description:
-          'Renk, tipografi, görsel dil ve metin tonunu tek bir premium agency standardında birleştirerek markanızı daha ayırt edici hale getiriyoruz.',
-        benefits: ['Markaya uygun görsel yön', 'Tutarlı kreatif sistem', 'Premium algı oluşturan detaylar'],
+          'Markanızın daha premium ve daha güvenilir görünmesi için görsel dili, metin tonunu ve kreatif sistemi tek standartta topluyoruz.',
+        benefits: ['Daha güçlü marka algısı', 'Tutarlı kreatif üretim disiplini', 'Reklam ve web arasında tek dil'],
       },
     ],
   },
@@ -113,24 +116,24 @@ export const serviceCategories: ServiceCategory[] = [
         title: 'Meta Ads Yönetimi',
         icon: 'megaphone',
         description:
-          'Instagram ve Facebook reklamlarında hedef kitlenizi doğru mesajla yakalayan, satış ve talep üreten kampanya sistemleri kuruyoruz.',
-        benefits: ['Hedef kitle ve kreatif uyumu', 'Performans odaklı reklam kurgusu', 'Düzenli optimizasyon ve raporlama'],
+          'Instagram ve Facebook reklamlarında doğru kitle + doğru kreatif + doğru teklif yapısını kurarak daha fazla talep akışı sağlıyoruz.',
+        benefits: ['Boşa giden bütçeyi azaltan kurgu', 'Talep odaklı kampanya yapısı', 'Düzenli optimizasyon ve görünür raporlama'],
       },
       {
         id: 'social-media-ads',
         title: 'Sosyal Medya Reklamcılığı',
         icon: 'messages-square',
         description:
-          'Kreatif üretim, kampanya dili ve reklam mesajını birlikte kurgulayarak sosyal medyayı görünürlükten gerçek büyümeye taşıyoruz.',
-        benefits: ['Kampanya odaklı içerik dili', 'Reels, story ve static kreatifler', 'Marka algısını güçlendiren reklam setleri'],
+          'Sosyal medya görünürlüğünü gerçek başvuru ve satış akışına çevirmek için kampanya dili, kreatif seti ve hedefleme yapısını birlikte kurguluyoruz.',
+        benefits: ['Reels + story + static reklam setleri', 'Dönüşüm odaklı metin ve kreatif', 'Algı ve performansı birlikte büyüten sistem'],
       },
       {
         id: 'search-growth',
         title: 'Google Ads & Arama',
         icon: 'search',
         description:
-          'Arama niyeti yüksek kullanıcıları doğru landing yapısına taşıyarak daha kaliteli talep ve daha güçlü dönüşüm akışı oluşturuyoruz.',
-        benefits: ['Arama kampanyaları', 'Lead kalitesi optimizasyonu', 'Landing ile uyumlu ölçümleme'],
+          'Satın alma niyeti yüksek aramalarda görünürlük kurup kullanıcıyı doğru landing sayfaya taşıyarak daha kaliteli lead üretiyoruz.',
+        benefits: ['Yüksek niyetli arama kampanyaları', 'Lead kalitesi optimizasyonu', 'Landing ve ölçümleme uyumu'],
       },
     ],
   },
@@ -165,9 +168,13 @@ export const caseStudies: CaseStudy[] = [
     title: 'Loli Nail Studio',
     category: 'Beauty',
     summary:
-      'Butik güzellik hizmetini daha rafine gösteren, rezervasyon kararını hızlandıran ve sosyal medya estetiğiyle uyumlu dijital sunum yaklaşımı.',
+      'Butik güzellik hizmetini daha premium gösteren ve rezervasyon kararını hızlandıran satış odaklı dijital vitrin.',
     metric: 'Soft Luxury',
     image: '/loli-logo.jpg',
+    problem: 'Marka estetiği güçlüydü ancak dijitalde premium algı ve net rezervasyon akışı yeterince belirgin değildi.',
+    solution: 'Hizmet hiyerarşisi, rezervasyon CTA yerleşimi ve görsel dil soft-luxury marka standardına göre yeniden kurgulandı.',
+    outcome: 'İlk izlenim güçlendi, hizmet karar süresi kısaldı ve rezervasyon niyeti daha net şekilde yönlendi.',
+    services: ['Web Site Tasarımı', 'Landing Kurgusu', 'Kreatif Sistem'],
     highlights: ['Markaya uygun sıcak tonlar', 'Hizmetleri net ayıran yapı', 'Rezervasyon odaklı çağrılar', 'Premium görünüm'],
   },
   {
@@ -175,9 +182,13 @@ export const caseStudies: CaseStudy[] = [
     title: 'Master Service',
     category: 'Automotive',
     summary:
-      'Teknik uzmanlığı güçlü kontrast, kurumsal güven ve servis odaklı bilgi hiyerarşisiyle daha otoriter ve daha net bir dijital yapıya taşıyan kurgu.',
+      'Teknik uzmanlığı daha otoriter bir servis deneyimine dönüştüren, güven ve bilgi hiyerarşisini merkeze alan kurgu.',
     metric: 'Technical Trust',
     image: '/master-logo.png',
+    problem: 'Teknik yetkinlik yüksek olmasına rağmen dijitalde servis otoritesini net hissettiren bilgi mimarisi eksikti.',
+    solution: 'Kontrast, bilgi sıralaması ve hızlı iletişim katmanları kurumsal servis güveni odağında yeniden yapılandırıldı.',
+    outcome: 'Kullanıcı doğru bilgiye daha hızlı ulaştı, iletişim adımı netleşti ve yetkili servis algısı daha güçlü hale geldi.',
+    services: ['Kurumsal Web', 'Bilgi Mimarisi', 'Hızlı İletişim Akışı'],
     highlights: ['Yetkili servis otoritesi', 'Güçlü kontrastlı görünüm', 'Hızlı iletişim akışı', 'Bilgi odaklı yapı'],
   },
 ];
@@ -188,22 +199,30 @@ export const pricingPlans: PricingPlan[] = [
     name: 'Starter Launch',
     priceTRY: '15.000 ₺',
     priceLabel: 'Başlangıç',
-    description: 'Yeni bir marka vitrini kurmak ya da tek sayfalık güçlü bir lansman sitesiyle dijitalde daha net görünmek isteyenler için.',
-    features: ['Tek sayfa premium web tasarımı', 'Temel içerik kurgusu', 'WhatsApp veya form entegrasyonu', 'Responsive geliştirme'],
+    description:
+      'Dijitalde profesyonel ve güven veren bir başlangıç yapmak isteyen markalar için hızlı yayına alınan temel premium paket.',
+    features: [
+      'Tek sayfa premium web tasarımı',
+      'Net hizmet hiyerarşisi ve güçlü ilk izlenim',
+      'WhatsApp veya form odaklı iletişim akışı',
+      'Mobil uyumlu hızlı geliştirme',
+      'Hızlı yayına alma',
+    ],
   },
   {
     id: 'growth',
     name: 'Growth Suite',
     priceTRY: '25.000 ₺',
     priceLabel: 'Önerilen',
-    description: 'Web tasarımı ile birlikte reklam ve dönüşüm sistemini aynı anda kurmak isteyen markalar için en dengeli model.',
+    description:
+      'Web, landing ve reklam katmanını birlikte kurarak daha düzenli talep akışı hedefleyen markalar için en dengeli model.',
     recommended: true,
     features: [
-      'Premium site veya landing kurulumu',
-      'Meta Ads kampanya kurgusu',
-      'Sosyal medya reklam kreatif yönü',
-      'Dönüşüm takibi ve optimizasyon',
-      'Aylık performans raporu',
+      'Premium web veya landing kurulumu',
+      'Meta Ads kampanya altyapısı',
+      'Kreatif yön ve reklam mesaj sistemi',
+      'Dönüşüm takibi + optimizasyon',
+      'Aylık performans raporlama',
     ],
   },
   {
@@ -211,13 +230,14 @@ export const pricingPlans: PricingPlan[] = [
     name: 'Signature Partner',
     priceTRY: '35.000 ₺',
     priceLabel: 'Üst Segment',
-    description: 'Tasarım, performans ve büyüme katmanını daha yoğun ve sürekli yönetmek isteyen markalar için premium partner modeli.',
+    description:
+      'Tasarım, reklam ve büyüme katmanını sürdürülebilir biçimde yönetmek isteyen markalar için partner odaklı yoğun çalışma modeli.',
     features: [
-      'Çoklu landing veya özel sayfa sistemi',
+      'Çoklu sayfa veya çoklu landing sistemi',
       'Meta + Google Ads yönetimi',
-      'Kreatif ve içerik optimizasyonu',
+      'Sürekli kreatif optimizasyon',
       'Haftalık strateji takibi',
-      'Öncelikli destek',
+      'Öncelikli iletişim ve destek',
     ],
   },
 ];
@@ -227,37 +247,49 @@ export const faqs: FaqItem[] = [
     id: 'f1',
     question: 'Hangi markalarla çalışıyorsunuz?',
     answer:
-      'Hizmet, güzellik, otomotiv ve dijital görünümünü daha premium hale getirmek isteyen farklı sektörlerdeki markalarla çalışıyoruz.',
+      'Öncelikli olarak güzellik, hizmet ve premium algı kurmak isteyen yerel işletmelerle çalışıyoruz. Uygun olmayan projelerde sürecin başında net yönlendirme yapıyoruz.',
   },
   {
     id: 'f2',
     question: 'Sadece web site tasarımı alabilir miyim?',
     answer:
-      'Evet. Yalnızca web site tasarımı, yalnızca reklam yönetimi ya da ikisini aynı sistem içinde kapsayan bir modelle ilerleyebiliriz.',
+      'Evet. Yalnızca web site, yalnızca reklam ya da web + reklam birlikte olacak şekilde ihtiyacınıza göre ilerliyoruz.',
   },
   {
     id: 'f3',
-    question: 'Meta Ads yönetimi de sunuyor musunuz?',
+    question: 'Reklam bütçesi paket ücretine dahil mi?',
     answer:
-      'Evet. Meta Ads tarafında hedefleme, kreatif yönü, reklam metni, ölçümleme ve optimizasyon dahil uçtan uca yönetim sunuyoruz.',
+      'Hayır. Paket bedeli hizmet yönetimi ve üretim kapsamıdır. Reklam bütçesi Meta/Google platformlarına ayrı ödenir ve stratejiye göre birlikte planlanır.',
   },
   {
     id: 'f4',
     question: 'Teslim süresi neye göre değişiyor?',
     answer:
-      'Sayfa kapsamı, içerik yoğunluğu, reklam altyapısı ve özel geliştirme ihtiyacına göre süre değişir. Çoğu proje keşif sonrası net takvimle başlar.',
+      'Kapsam, içerik yoğunluğu ve reklam altyapısına göre değişir. Keşif sonrası net takvim paylaşır, adımları o plana göre ilerletiriz.',
   },
   {
     id: 'f5',
     question: 'Uzaktan çalışıyor musunuz?',
     answer:
-      'Evet. Şu anda sabit bir mağaza veya ofis lokasyonundan bağımsız, tamamen dijital ve esnek şekilde proje yürütüyoruz.',
+      'Evet. Çalışma modelimiz tamamen dijitaldir. Toplantılar, revize ve rapor süreçleri online yürütülür.',
   },
   {
     id: 'f6',
+    question: 'Sonuçlar ne kadar sürede görünür?',
+    answer:
+      'Web tarafında etki yayına alındıktan sonra hemen hissedilir. Reklam tarafında sağlıklı optimizasyon için genellikle ilk 2-4 hafta veri toplama ve iyileştirme süreci gerekir.',
+  },
+  {
+    id: 'f7',
+    question: 'Revize süreci nasıl ilerliyor?',
+    answer:
+      'Süreç başında kapsamı net tanımlarız. Her aşamada kontrollü revize döngüsüyle ilerler, belirsiz ve uzayan revize kaosunu engelleriz.',
+  },
+  {
+    id: 'f8',
     question: 'Fiyatlandırma nasıl belirleniyor?',
     answer:
-      'Paketler başlangıç çerçevesidir. Nihai kapsam; tasarım yoğunluğu, reklam bütçesi, sayfa sayısı ve ek geliştirme ihtiyaçlarına göre netleşir.',
+      'Paketler başlangıç çerçevesidir. Nihai teklif; sayfa kapsamı, reklam yoğunluğu, kreatif üretim ve teknik ihtiyaçlara göre netleşir.',
   },
 ];
 

@@ -57,6 +57,10 @@ export type CaseStudy = {
   summary: string;
   metric: string;
   image: string;
+  problem?: string;
+  solution?: string;
+  outcome?: string;
+  services?: string[];
   highlights?: string[];
 };
 

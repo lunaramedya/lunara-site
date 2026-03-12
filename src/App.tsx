@@ -46,7 +46,7 @@ const planScopedServiceOptions: Record<string, string[]> = {
   ],
 };
 
-const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'contact'];
+const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'faq', 'contact'];
 
 function App() {
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);

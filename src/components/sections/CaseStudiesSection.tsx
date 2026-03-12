@@ -75,6 +75,56 @@ export function CaseStudiesSection() {
                   {item.summary}
                 </p>
 
+                <div className="mt-5 space-y-3">
+                  <div
+                    className={
+                      isMaster
+                        ? 'rounded-[18px] border border-white/10 bg-white/6 px-4 py-3 text-sm leading-6 text-white/80'
+                        : 'rounded-[18px] border border-[#e5cbd6] bg-white/82 px-4 py-3 text-sm leading-6 text-[#343038]'
+                    }
+                  >
+                    <strong className={isMaster ? 'text-white' : 'text-[#111317]'}>İhtiyaç:</strong>{' '}
+                    {item.problem}
+                  </div>
+                  <div
+                    className={
+                      isMaster
+                        ? 'rounded-[18px] border border-white/10 bg-white/6 px-4 py-3 text-sm leading-6 text-white/80'
+                        : 'rounded-[18px] border border-[#e5cbd6] bg-white/82 px-4 py-3 text-sm leading-6 text-[#343038]'
+                    }
+                  >
+                    <strong className={isMaster ? 'text-white' : 'text-[#111317]'}>Yapılan:</strong>{' '}
+                    {item.solution}
+                  </div>
+                  <div
+                    className={
+                      isMaster
+                        ? 'rounded-[18px] border border-white/10 bg-white/6 px-4 py-3 text-sm leading-6 text-white/80'
+                        : 'rounded-[18px] border border-[#e5cbd6] bg-white/82 px-4 py-3 text-sm leading-6 text-[#343038]'
+                    }
+                  >
+                    <strong className={isMaster ? 'text-white' : 'text-[#111317]'}>Sonuç:</strong>{' '}
+                    {item.outcome}
+                  </div>
+                </div>
+
+                {item.services?.length ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {item.services.map((service) => (
+                      <span
+                        key={service}
+                        className={
+                          isMaster
+                            ? 'rounded-full border border-white/16 bg-white/8 px-3 py-1.5 text-xs text-white/88'
+                            : 'rounded-full border border-[#d7b5c3] bg-white px-3 py-1.5 text-xs text-[#7c4862]'
+                        }
+                      >
+                        {service}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   {item.highlights?.map((highlight) => (
                     <div

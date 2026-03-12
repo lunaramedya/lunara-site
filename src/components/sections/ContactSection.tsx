@@ -16,8 +16,28 @@ type ContactFormValues = {
   company: string;
   phone: string;
   email: string;
+  instagram: string;
+  interestedService: string;
+  monthlyAdBudget: string;
   message: string;
 };
+
+const contactServiceOptions = [
+  'Web Site Tasarımı',
+  'Landing Page & Funnel',
+  'Meta Ads Yönetimi',
+  'Sosyal Medya Reklamcılığı',
+  'Google Ads & Arama',
+  'Tam Kapsam Çalışma',
+];
+
+const budgetOptions = [
+  'Henüz belirlenmedi',
+  '15.000 TL altı',
+  '15.000 TL - 30.000 TL',
+  '30.000 TL - 60.000 TL',
+  '60.000 TL ve üzeri',
+];
 
 type ContactSectionProps = {
   emphasized: boolean;
@@ -40,6 +60,9 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
       company: '',
       phone: '',
       email: '',
+      instagram: '',
+      interestedService: '',
+      monthlyAdBudget: '',
       message: '',
     },
   });
@@ -64,6 +87,9 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
         company: values.company,
         phone: values.phone,
         email: values.email,
+        instagram: values.instagram,
+        interestedService: values.interestedService,
+        monthlyAdBudget: values.monthlyAdBudget,
         message: values.message,
       });
       reset();
@@ -163,6 +189,61 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
                   },
                 })}
               />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                id="instagram"
+                label="Instagram Hesabı"
+                placeholder="@markaniz"
+                error={errors.instagram?.message}
+                autoComplete="off"
+                {...register('instagram', {
+                  required: 'Instagram hesabı zorunludur.',
+                })}
+              />
+
+              <div className="space-y-2">
+                <label htmlFor="interestedService" className="block text-sm font-medium text-[var(--color-ink)]">
+                  İlgilendiğiniz Hizmet
+                </label>
+                <select
+                  id="interestedService"
+                  className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+                  {...register('interestedService', { required: 'Hizmet seçimi zorunludur.' })}
+                >
+                  <option value="">Seçiniz</option>
+                  {contactServiceOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                {errors.interestedService?.message ? (
+                  <p className="text-xs text-rose-600">{errors.interestedService.message}</p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="monthlyAdBudget" className="block text-sm font-medium text-[var(--color-ink)]">
+                Aylık Reklam Bütçesi
+              </label>
+              <select
+                id="monthlyAdBudget"
+                className="h-12 w-full rounded-[20px] border border-[var(--color-border-strong)] bg-white/6 px-4 text-sm text-[var(--color-ink)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+                {...register('monthlyAdBudget', { required: 'Bütçe bilgisi zorunludur.' })}
+              >
+                <option value="">Seçiniz</option>
+                {budgetOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {errors.monthlyAdBudget?.message ? (
+                <p className="text-xs text-rose-600">{errors.monthlyAdBudget.message}</p>
+              ) : null}
             </div>
 
             <Textarea
