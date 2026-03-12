@@ -48,6 +48,19 @@ const planScopedServiceOptions: Record<string, string[]> = {
 
 const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'faq', 'contact'];
 
+function isPricingPlan(value: unknown): value is PricingPlan {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const data = value as Partial<PricingPlan>;
+  return (
+    typeof data.id === 'string' &&
+    typeof data.name === 'string' &&
+    typeof data.priceTRY === 'string'
+  );
+}
+
 function App() {
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);
   const [contactEmphasized, setContactEmphasized] = useState(false);
@@ -92,18 +105,22 @@ function App() {
     [scrollTo],
   );
 
-  const openLeadModal = useCallback((plan?: PricingPlan | null, source: 'package_card' | 'generic_cta' = 'generic_cta') => {
-    const options = plan ? (planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions) : defaultLeadServiceOptions;
+  const openLeadModal = useCallback(
+    (planCandidate?: PricingPlan | null, source: 'package_card' | 'generic_cta' = 'generic_cta') => {
+      const plan = isPricingPlan(planCandidate) ? planCandidate : null;
+      const options = plan ? (planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions) : defaultLeadServiceOptions;
 
-    setSelectedPlan(plan ?? null);
-    setLeadSource(source);
-    reset({
-      name: '',
-      phone: '',
-      service: options[0] ?? '',
-    });
-    setLeadModalOpen(true);
-  }, [reset]);
+      setSelectedPlan(plan);
+      setLeadSource(plan ? source : 'generic_cta');
+      reset({
+        name: '',
+        phone: '',
+        service: options[0] ?? '',
+      });
+      setLeadModalOpen(true);
+    },
+    [reset],
+  );
 
   useEffect(() => {
     if (!contactEmphasized) {
@@ -158,11 +175,11 @@ function App() {
       <Navbar
         activeSection={activeSection}
         onNavigate={navigateTo}
-        onOpenLeadModal={openLeadModal}
+        onOpenLeadModal={() => openLeadModal(null, 'generic_cta')}
       />
 
       <main>
-        <HeroSection onNavigate={navigateTo} onOpenLeadModal={openLeadModal} />
+        <HeroSection onNavigate={navigateTo} onOpenLeadModal={() => openLeadModal(null, 'generic_cta')} />
         <SocialProofSection />
         <ServicesSection />
         <CaseStudiesSection />

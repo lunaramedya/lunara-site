@@ -46,7 +46,7 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" onClick={onOpenLeadModal}>
+              <Button size="lg" onClick={() => onOpenLeadModal()}>
                 Ücretsiz Ön Analiz Al <ArrowRight size={18} />
               </Button>
               <Button
