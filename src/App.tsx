@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { PricingPlan } from './types/site';
-import { AdminApp } from './admin/AdminApp';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
 import { CaseStudiesSection } from './components/sections/CaseStudiesSection';
@@ -64,6 +63,7 @@ function isPricingPlan(value: unknown): value is PricingPlan {
 }
 
 function App() {
+  const AdminApp = lazy(() => import('./admin/AdminApp').then((mod) => ({ default: mod.AdminApp })));
   const [isAdminRoute, setIsAdminRoute] = useState(
     typeof window !== 'undefined' && window.location.hash.startsWith('#/admin'),
   );
@@ -225,7 +225,11 @@ function App() {
     : defaultLeadServiceOptions;
 
   if (isAdminRoute) {
-    return <AdminApp />;
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg)]" />}>
+        <AdminApp />
+      </Suspense>
+    );
   }
 
   return (
