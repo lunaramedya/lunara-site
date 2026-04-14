@@ -1,21 +1,22 @@
 import { motion } from 'framer-motion';
-import { caseStudies } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionTitle } from '../ui/SectionTitle';
 
 export function CaseStudiesSection() {
+  const { content } = useSiteContent();
   return (
     <SectionContainer id="cases" className="scroll-mt-24">
       <SectionTitle
-        badge={<Badge>Referanslar</Badge>}
-        title="Seçili referanslarımız"
-        subtitle="Farklı sektörlerde kurduğumuz iki farklı premium yaklaşım, tasarım dilini ve kullanıcı kararını nasıl güçlendirdiğimizi net biçimde gösteriyor."
+        badge={<Badge>{content.casesSection.badge}</Badge>}
+        title={content.casesSection.title}
+        subtitle={content.casesSection.subtitle}
       />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
-        {caseStudies.map((item, index) => {
+        {content.caseStudies.map((item, index) => {
           const isMaster = item.id === 'master';
           const frameClass = isMaster
             ? 'mt-6 flex h-[240px] items-center justify-center rounded-[24px] border border-white/10 bg-white/4 p-4 sm:h-[320px] sm:p-5 md:h-[420px] md:p-6 lg:h-[520px]'

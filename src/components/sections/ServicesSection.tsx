@@ -8,7 +8,7 @@ import {
   Workflow,
 } from 'lucide-react';
 import { memo } from 'react';
-import { serviceCategories } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import type { ServiceItem } from '../../types/site';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Card } from '../ui/Card';
@@ -55,15 +55,16 @@ const ServiceCard = memo(function ServiceCard({ item }: ServiceCardProps) {
 });
 
 export function ServicesSection() {
+  const { content } = useSiteContent();
   return (
     <SectionContainer id="services" className="scroll-mt-24">
       <SectionTitle
-        title="Markanızı büyüten hizmet katmanları"
-        subtitle="Web tasarımı, reklam yönetimi ve kreatif yön tek başına değil, birbirini besleyen tek bir büyüme sistemi olarak çalıştığında gerçek etki ortaya çıkar."
+        title={content.servicesSection.title}
+        subtitle={content.servicesSection.subtitle}
       />
 
       <div className="mt-10 space-y-10 sm:mt-12 sm:space-y-12">
-        {serviceCategories.map((category, groupIndex) => (
+        {content.serviceCategories.map((category, groupIndex) => (
           <div key={category.id}>
             <div className="mb-5 flex items-center gap-4">
               <span className="h-px flex-1 bg-[var(--color-border-strong)]" />

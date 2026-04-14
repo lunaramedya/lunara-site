@@ -29,6 +29,17 @@ SMTP_PASS=your-app-password
 MAIL_TO=your-account@gmail.com
 ```
 
+## SQL ve Admin Panel
+
+Tüm logların ve içeriklerin SQL üzerinde tutulması için `DATABASE_URL` zorunludur. Neon, Supabase veya Render Postgres kullanılabilir.
+
+```bash
+DATABASE_URL=your-postgres-url
+ADMIN_PASSWORD=change-this-password
+```
+
+Admin paneli için tarayıcıda `#/admin` yolunu açın.
+
 Local geliştirmede `npm run dev` altında `/api/contact` endpoint'i çalışır. Vercel deploy'unda aynı endpoint `api/contact.ts` üzerinden serverless function olarak devam eder.
 
 ## Build

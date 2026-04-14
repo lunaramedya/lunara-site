@@ -1,11 +1,12 @@
 import { ArrowRight } from 'lucide-react';
-import { blogPosts } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionTitle } from '../ui/SectionTitle';
 
 export function BlogPreviewSection() {
+  const { content } = useSiteContent();
   return (
     <SectionContainer id="blog" className="scroll-mt-24 bg-slate-50/80">
       <SectionTitle
@@ -14,7 +15,7 @@ export function BlogPreviewSection() {
       />
 
       <div className="mt-8 grid gap-4 md:grid-cols-3">
-        {blogPosts.map((post) => (
+        {content.blogPosts.map((post) => (
           <Card key={post.id} className="overflow-hidden p-0 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(15,23,42,0.1)]">
             <img src={post.image} alt={post.title} loading="lazy" className="h-44 w-full object-cover" />
             <div className="space-y-3 p-5">

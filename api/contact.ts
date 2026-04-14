@@ -1,4 +1,5 @@
 import { readJsonBody, submitMailRequest } from '../server/contact-mail.js';
+import { getRequestMeta } from '../server/request.js';
 
 type RequestLike = AsyncIterable<Uint8Array> & {
   method?: string;
@@ -30,7 +31,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
   try {
     const payload = req.body ?? (await readJsonBody(req));
-    const result = await submitMailRequest(payload, process.env);
+    const meta = getRequestMeta(req as { headers?: Record<string, string> });
+    const result = await submitMailRequest(payload, process.env, meta);
     res.status(result.status).json(result.body);
   } catch {
     res.status(500).json({

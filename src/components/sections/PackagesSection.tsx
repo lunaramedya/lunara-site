@@ -1,5 +1,5 @@
 import { CheckCircle2 } from 'lucide-react';
-import { pricingPlans } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import type { PricingPlan } from '../../types/site';
 import { cn } from '../../utils/cn';
 import { SectionContainer } from '../layout/SectionContainer';
@@ -12,16 +12,17 @@ type PackagesSectionProps = {
 };
 
 export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
+  const { content } = useSiteContent();
   return (
     <SectionContainer id="packages" className="scroll-mt-24">
       <SectionTitle
-        badge={<Badge>Çalışma Modelleri</Badge>}
-        title="İhtiyaca göre ölçeklenen paketler"
-        subtitle="Bazı markalar için güçlü bir başlangıç yeterlidir, bazıları ise web ve reklam sistemini birlikte kurmak ister. Paketleri buna göre şekillendiriyoruz."
+        badge={<Badge>{content.packagesSection.badge}</Badge>}
+        title={content.packagesSection.title}
+        subtitle={content.packagesSection.subtitle}
       />
 
       <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {pricingPlans.map((plan) => (
+        {content.pricingPlans.map((plan) => (
           <article
             key={plan.id}
             className={cn(
@@ -71,7 +72,7 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
       </div>
 
       <p className="mt-5 text-xs text-[var(--color-muted)]">
-        Paketler başlangıç çerçevesidir. Nihai kapsam; marka yapısı, sayfa yoğunluğu ve reklam ihtiyacına göre netleşir.
+        {content.packagesSection.footnote}
       </p>
     </SectionContainer>
   );

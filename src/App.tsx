@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { PricingPlan } from './types/site';
+import { AdminApp } from './admin/AdminApp';
 import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
 import { CaseStudiesSection } from './components/sections/CaseStudiesSection';
@@ -19,6 +20,7 @@ import { Toast } from './components/ui/Toast';
 import { useActiveSection } from './hooks/useActiveSection';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { submitContactForm } from './utils/contactApi';
+import { logEvent } from './utils/logging';
 
 type LeadFormValues = {
   name: string;
@@ -62,6 +64,9 @@ function isPricingPlan(value: unknown): value is PricingPlan {
 }
 
 function App() {
+  const [isAdminRoute, setIsAdminRoute] = useState(
+    typeof window !== 'undefined' && window.location.hash.startsWith('#/admin'),
+  );
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);
   const [contactEmphasized, setContactEmphasized] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
@@ -101,6 +106,12 @@ function App() {
       if (id === 'contact') {
         setContactEmphasized(true);
       }
+
+      logEvent({
+        eventType: 'navigation',
+        eventName: 'section_scroll',
+        metadata: { target: id },
+      });
     },
     [scrollTo],
   );
@@ -118,9 +129,27 @@ function App() {
         service: options[0] ?? '',
       });
       setLeadModalOpen(true);
+
+      logEvent({
+        eventType: 'cta',
+        eventName: 'open_lead_modal',
+        metadata: {
+          source: plan ? source : 'generic_cta',
+          planId: plan?.id ?? null,
+          planName: plan?.name ?? null,
+        },
+      });
     },
     [reset],
   );
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setIsAdminRoute(window.location.hash.startsWith('#/admin'));
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   useEffect(() => {
     if (!contactEmphasized) {
@@ -131,8 +160,36 @@ function App() {
     return () => clearTimeout(timeout);
   }, [contactEmphasized]);
 
+  useEffect(() => {
+    logEvent({
+      eventType: 'view',
+      eventName: 'page_view',
+      metadata: { section: 'hero' },
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!activeSection) {
+      return;
+    }
+    logEvent({
+      eventType: 'view',
+      eventName: 'section_view',
+      metadata: { section: activeSection },
+    });
+  }, [activeSection]);
+
   const handleLeadSubmit = async (values: LeadFormValues) => {
     try {
+      logEvent({
+        eventType: 'form',
+        eventName: 'lead_submit',
+        metadata: {
+          planId: selectedPlan?.id ?? null,
+          planName: selectedPlan?.name ?? null,
+          service: values.service,
+        },
+      });
       await submitContactForm({
         kind: 'lead',
         name: values.name,
@@ -166,6 +223,10 @@ function App() {
   const activeLeadServiceOptions = selectedPlan
     ? (planScopedServiceOptions[selectedPlan.id] ?? defaultLeadServiceOptions)
     : defaultLeadServiceOptions;
+
+  if (isAdminRoute) {
+    return <AdminApp />;
+  }
 
   return (
     <div className="relative overflow-x-clip bg-[var(--color-bg)]">

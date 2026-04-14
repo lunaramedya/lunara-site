@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { Instagram, Mail, MessageCircle, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { contactInfo } from '../../data/siteData';
+import { logEvent } from '../../utils/logging';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { submitContactForm } from '../../utils/contactApi';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Button } from '../ui/Button';
@@ -22,30 +23,14 @@ type ContactFormValues = {
   message: string;
 };
 
-const contactServiceOptions = [
-  'Web Site Tasarımı',
-  'Landing Page & Funnel',
-  'Meta Ads Yönetimi',
-  'Sosyal Medya Reklamcılığı',
-  'Google Ads & Arama',
-  'Tam Kapsam Çalışma',
-];
-
-const budgetOptions = [
-  'Henüz belirlenmedi',
-  '15.000 TL altı',
-  '15.000 TL - 30.000 TL',
-  '30.000 TL - 60.000 TL',
-  '60.000 TL ve üzeri',
-];
-
 type ContactSectionProps = {
   emphasized: boolean;
 };
 
 export function ContactSection({ emphasized }: ContactSectionProps) {
-  const whatsappHref = `https://wa.me/${contactInfo.whatsapp}`;
-  const mailtoHref = `mailto:${contactInfo.email}`;
+  const { content } = useSiteContent();
+  const whatsappHref = `https://wa.me/${content.contactInfo.whatsapp}`;
+  const mailtoHref = `mailto:${content.contactInfo.email}`;
 
   const {
     register,
@@ -81,6 +66,14 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
 
   const onSubmit = async (values: ContactFormValues) => {
     try {
+      logEvent({
+        eventType: 'form',
+        eventName: 'contact_submit',
+        metadata: {
+          interestedService: values.interestedService,
+          monthlyAdBudget: values.monthlyAdBudget,
+        },
+      });
       await submitContactForm({
         kind: 'contact',
         name: values.name,
@@ -112,9 +105,13 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
   return (
     <SectionContainer id="contact" className="scroll-mt-24">
       <SectionTitle
-        badge={<span className="inline-flex items-center rounded-full border border-[var(--color-border-strong)] bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Contact</span>}
-        title="Projeyi birlikte başlatalım"
-        subtitle="Markanızın hedefini, istediğiniz görünümü ve hizmet ihtiyacınızı paylaşın. Size uygun web, reklam ve büyüme modelini net biçimde kuralım."
+        badge={
+          <span className="inline-flex items-center rounded-full border border-[var(--color-border-strong)] bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">
+            {content.contactSection.badge}
+          </span>
+        }
+        title={content.contactSection.title}
+        subtitle={content.contactSection.subtitle}
       />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -125,15 +122,15 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
         >
           <div className="mb-6">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">
-              Project Brief
+              {content.contactSection.formBadge}
             </p>
             <p
               className="mt-3 text-3xl leading-none text-[var(--color-ink)] sm:text-4xl"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Briefinizi bırakın,
+              {content.contactSection.formTitle}
               <span className="block bg-[linear-gradient(135deg,var(--color-primary),#d7d5ff_52%,var(--color-accent))] bg-clip-text text-transparent">
-                güçlü bir başlangıç hazırlayalım.
+                {content.contactSection.formHighlight}
               </span>
             </p>
           </div>
@@ -213,7 +210,7 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
                   {...register('interestedService', { required: 'Hizmet seçimi zorunludur.' })}
                 >
                   <option value="">Seçiniz</option>
-                  {contactServiceOptions.map((option) => (
+                  {content.contactFormOptions.serviceOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
                     </option>
@@ -235,7 +232,7 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
                 {...register('monthlyAdBudget', { required: 'Bütçe bilgisi zorunludur.' })}
               >
                 <option value="">Seçiniz</option>
-                {budgetOptions.map((option) => (
+                {content.contactFormOptions.budgetOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -269,31 +266,33 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
 
         <div className="space-y-5 rounded-[30px] border border-[var(--color-border)] bg-[linear-gradient(180deg,#0d1528,#09111f)] p-5 sm:p-6 text-white shadow-[0_28px_70px_rgba(1,6,16,0.5)]">
           <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/56">Direct Contact</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/56">
+              {content.contactSection.directBadge}
+            </p>
             <h3
               className="mt-3 text-3xl leading-none text-white sm:text-4xl"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Hızlı dönüş,
-              <span className="block text-white/72">net yol haritası.</span>
+              {content.contactSection.directTitle}
+              <span className="block text-white/72">{content.contactSection.directSubtitle}</span>
             </h3>
             <ul className="mt-6 space-y-4 text-sm text-white/78">
               <li className="flex items-start gap-3">
                 <Phone size={17} className="mt-0.5 text-[var(--color-primary)]" />
                 <a href={whatsappHref} target="_blank" rel="noreferrer" className="transition hover:text-white">
-                  {contactInfo.phone}
+                  {content.contactInfo.phone}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={17} className="mt-0.5 text-[var(--color-primary)]" />
                 <a href={mailtoHref} className="transition hover:text-white">
-                  {contactInfo.email}
+                  {content.contactInfo.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Instagram size={17} className="mt-0.5 text-[var(--color-primary)]" />
-                <a href={contactInfo.instagramUrl} target="_blank" rel="noreferrer" className="transition hover:text-white">
-                  {contactInfo.instagramHandle}
+                <a href={content.contactInfo.instagramUrl} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                  {content.contactInfo.instagramHandle}
                 </a>
               </li>
             </ul>
@@ -310,7 +309,7 @@ export function ContactSection({ emphasized }: ContactSectionProps) {
           </Button>
 
           <a
-            href={contactInfo.instagramUrl}
+            href={content.contactInfo.instagramUrl}
             target="_blank"
             rel="noreferrer"
             className="flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-white/6 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"

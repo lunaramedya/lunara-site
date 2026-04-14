@@ -1,21 +1,22 @@
 import { motion } from 'framer-motion';
-import { processSteps } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
 import { SectionTitle } from '../ui/SectionTitle';
 
 export function ProcessSection() {
+  const { content } = useSiteContent();
   return (
     <SectionContainer id="process" className="scroll-mt-24 bg-[linear-gradient(180deg,#0b1426,#060c18)]">
       <SectionTitle
-        title="Net süreç, net ilerleme"
-        subtitle="Belirsiz revize döngüleri yerine; önce yön, sonra tasarım ve build, ardından ölçekleme mantığıyla hızlı ama kontrollü ilerliyoruz."
-        badge={<Badge className="border-white/14 bg-white/8 text-white/78">4 Adımda İlerleme</Badge>}
+        title={content.processSection.title}
+        subtitle={content.processSection.subtitle}
+        badge={<Badge className="border-white/14 bg-white/8 text-white/78">{content.processSection.badge}</Badge>}
         tone="inverse"
       />
 
       <div className="relative mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {processSteps.map((step, index) => (
+        {content.processSteps.map((step, index) => (
           <motion.div
             key={step.id}
             initial={{ opacity: 0, y: 20 }}

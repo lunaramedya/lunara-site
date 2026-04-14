@@ -1,24 +1,35 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
-import { faqs } from '../../data/siteData';
+import { useEffect, useState } from 'react';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { cn } from '../../utils/cn';
 import { SectionContainer } from '../layout/SectionContainer';
 import { SectionTitle } from '../ui/SectionTitle';
 
 export function FAQSection() {
-  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id ?? null);
+  const { content } = useSiteContent();
+  const [openId, setOpenId] = useState<string | null>(content.faqs[0]?.id ?? null);
+
+  useEffect(() => {
+    if (!openId && content.faqs[0]?.id) {
+      setOpenId(content.faqs[0].id);
+    }
+  }, [content.faqs, openId]);
 
   return (
     <SectionContainer id="faq" className="scroll-mt-24">
       <SectionTitle
-        badge={<span className="inline-flex items-center rounded-full border border-[var(--color-border-strong)] bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">FAQ</span>}
-        title="Karar vermeden önce en çok sorulanlar"
-        subtitle="Fiyat, süreç, reklam bütçesi ve teslim modeliyle ilgili kritik soruları net şekilde cevapladık."
+        badge={
+          <span className="inline-flex items-center rounded-full border border-[var(--color-border-strong)] bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">
+            {content.faqSection.badge}
+          </span>
+        }
+        title={content.faqSection.title}
+        subtitle={content.faqSection.subtitle}
       />
 
       <div className="mt-8 space-y-3">
-        {faqs.map((item) => {
+        {content.faqs.map((item) => {
           const isOpen = openId === item.id;
 
           return (

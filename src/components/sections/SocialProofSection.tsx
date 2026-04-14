@@ -1,27 +1,20 @@
 import { motion } from 'framer-motion';
-import { agencySignals } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionTitle } from '../ui/SectionTitle';
 
-const targetSegments = [
-  'Güzellik salonları ve butik beauty markaları',
-  'Premium algı kurmak isteyen hizmet işletmeleri',
-  'Reklam trafiğini boşa harcamak istemeyen markalar',
-  'WhatsApp ve formdan daha net talep akışı arayan ekipler',
-  'Dijitalde daha güvenilir ve daha otoriter görünmek isteyen işletmeler',
-];
-
 export function SocialProofSection() {
+  const { content } = useSiteContent();
   return (
     <SectionContainer className="pt-10 md:pt-14">
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <div className="space-y-6">
           <SectionTitle
-            badge={<Badge>Neden Lunara</Badge>}
-            title="Sadece tasarım değil, sonuç üreten kurgu"
-            subtitle="Web, reklam ve kreatif katmanını tek bir sistemde birleştirerek markanızın güven algısını yükseltir, talep kararını hızlandırırız."
+            badge={<Badge>{content.socialProof.badge}</Badge>}
+            title={content.socialProof.title}
+            subtitle={content.socialProof.subtitle}
           />
 
           <div className="rounded-[30px] border border-[var(--color-border)] bg-[linear-gradient(135deg,rgba(13,24,48,0.94),rgba(8,13,24,0.86))] p-6 shadow-[0_24px_60px_rgba(2,8,20,0.42)]">
@@ -32,16 +25,16 @@ export function SocialProofSection() {
               className="mt-4 text-4xl leading-none text-[var(--color-ink)]"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Güven veren görünüm,
+              {content.socialProof.highlightTitle}
               <span className="block bg-[linear-gradient(135deg,var(--color-primary),#d7d5ff_50%,var(--color-accent))] bg-clip-text text-transparent">
-                daha net başvuru akışı.
+                {content.socialProof.highlightHighlight}
               </span>
             </p>
           </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {agencySignals.map((signal, index) => (
+          {content.agencySignals.map((signal, index) => (
             <motion.div
               key={signal.id}
               initial={{ opacity: 0, y: 16 }}
@@ -71,13 +64,13 @@ export function SocialProofSection() {
           className="text-3xl leading-none text-[var(--color-ink)] sm:text-4xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Kimler için doğru partneriz?
+          {content.socialProof.targetTitle}
         </h3>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--color-muted)]">
-          Her marka için değil, dijitalde premium algı ve düzenli talep akışı hedefleyen işletmeler için en verimli modeli kuruyoruz.
+          {content.socialProof.targetSubtitle}
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {targetSegments.map((segment) => (
+          {content.socialProof.targetSegments.map((segment) => (
             <div
               key={segment}
               className="rounded-[20px] border border-[var(--color-border)] bg-white/6 px-4 py-4 text-sm leading-6 text-[var(--color-ink)]"

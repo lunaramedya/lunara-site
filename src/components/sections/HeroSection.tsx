@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
-import { contactInfo, stats } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
+import { logEvent } from '../../utils/logging';
 import { BrandMark } from '../brand/BrandMark';
 import { SectionContainer } from '../layout/SectionContainer';
 import { Badge } from '../ui/Badge';
@@ -11,9 +12,10 @@ type HeroSectionProps = {
   onOpenLeadModal: () => void;
 };
 
-const heroServices = ['Web Site Tasarımı', 'Meta Ads', 'Sosyal Medya Reklamcılığı', 'Landing Page', 'Kreatif Sistem'];
-
 export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
+  const { content } = useSiteContent();
+  const heroServices = content.heroServices;
+
   return (
     <SectionContainer id="hero" className="pt-28 sm:pt-32 md:pt-40">
       <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
@@ -25,7 +27,7 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
             className="space-y-8"
           >
             <Badge className="border-[var(--color-border-strong)] bg-white/8 text-[var(--color-primary)]">
-              Dijital büyümenin yeni adresi
+              {content.hero.badge}
             </Badge>
 
             <div className="space-y-5">
@@ -33,35 +35,40 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
                 className="max-w-4xl text-4xl leading-[0.94] tracking-[-0.04em] text-[var(--color-ink)] sm:text-5xl md:text-6xl lg:text-7xl"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                Premium görünüm, net mesaj ve
+                {content.hero.title}
                 <span className="block bg-[linear-gradient(135deg,var(--color-primary),#d7d5ff_54%,var(--color-accent))] bg-clip-text text-transparent">
-                  daha fazla talep üreten sistemler
+                  {content.hero.highlight}
                 </span>
               </h1>
               <p className="max-w-2xl text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg md:leading-8">
-                Lunara Medya; hizmet ve premium algı odaklı markalar için web sitesi, landing page, Meta Ads ve
-                kreatif sistemleri tek çatı altında kurar. Amaç yalnızca şık görünmek değil; daha güçlü güven, daha
-                net başvuru ve daha yüksek dönüşümdür.
+                {content.hero.subtitle}
               </p>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button size="lg" onClick={() => onOpenLeadModal()}>
-                Ücretsiz Ön Analiz Al <ArrowRight size={18} />
+                {content.hero.primaryCta} <ArrowRight size={18} />
               </Button>
               <Button
-                href={`https://wa.me/${contactInfo.whatsapp}`}
+                href={`https://wa.me/${content.contactInfo.whatsapp}`}
                 target="_blank"
                 rel="noreferrer"
                 size="lg"
                 variant="secondary"
+                onClick={() =>
+                  logEvent({
+                    eventType: 'cta',
+                    eventName: 'whatsapp_click',
+                    metadata: { location: 'hero' },
+                  })
+                }
               >
-                <MessageCircle size={18} /> WhatsApp'tan Yaz
+                <MessageCircle size={18} /> {content.hero.secondaryCta}
               </Button>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 md:max-w-3xl lg:grid-cols-5">
-              {stats.map((item) => (
+              {content.stats.map((item) => (
                 <div
                   key={item}
                   className="rounded-[24px] border border-[var(--color-border)] bg-white/6 px-4 py-4 text-sm font-semibold text-[var(--color-ink)] shadow-[0_18px_40px_rgba(4,9,20,0.32)] backdrop-blur-xl"

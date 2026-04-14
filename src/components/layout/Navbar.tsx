@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { navItems } from '../../data/siteData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { cn } from '../../utils/cn';
 import { BrandMark } from '../brand/BrandMark';
 import { Button } from '../ui/Button';
@@ -14,6 +14,7 @@ type NavbarProps = {
 
 export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const { content } = useSiteContent();
 
   const handleNav = (id: string) => {
     onNavigate(id);
@@ -32,7 +33,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
         </button>
 
         <nav className="hidden items-center gap-1 rounded-full border border-[var(--color-border)] bg-white/4 p-1 md:flex" aria-label="Ana menü">
-          {navItems.map((item) => (
+          {content.navItems.map((item) => (
             <button
               type="button"
               key={item.id}
@@ -73,7 +74,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
             className="mx-4 mt-3 rounded-[28px] border border-[var(--color-border)] bg-[rgba(8,13,26,0.96)] px-4 pb-4 pt-3 shadow-[0_24px_44px_rgba(1,6,16,0.44)] backdrop-blur-xl md:hidden"
           >
             <nav className="flex flex-col gap-1" aria-label="Mobil menü">
-              {navItems.map((item) => (
+              {content.navItems.map((item) => (
                 <button
                   type="button"
                   key={item.id}

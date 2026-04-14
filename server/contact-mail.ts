@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { insertContact, insertLead, isDatabaseConfigured } from './db';
 
 type BasePayload = {
   name?: string;
@@ -27,6 +28,11 @@ export type LeadPayload = BasePayload & {
 export type MailPayload = ContactPayload | LeadPayload;
 
 type EnvSource = Record<string, string | undefined>;
+
+type RequestMeta = {
+  ip?: string | null;
+  userAgent?: string | null;
+};
 
 type ApiResult = {
   status: number;
@@ -196,7 +202,11 @@ function buildMail(payload: MailPayload) {
   };
 }
 
-export async function submitMailRequest(payload: unknown, env: EnvSource): Promise<ApiResult> {
+export async function submitMailRequest(
+  payload: unknown,
+  env: EnvSource,
+  meta?: RequestMeta,
+): Promise<ApiResult> {
   if (!validatePayload(payload)) {
     return {
       status: 400,
@@ -218,6 +228,37 @@ export async function submitMailRequest(payload: unknown, env: EnvSource): Promi
         pass: config.pass,
       },
     });
+
+    if (isDatabaseConfigured(env)) {
+      if (payload.kind === 'lead') {
+        await insertLead(env, {
+          name: payload.name ?? '',
+          phone: payload.phone ?? '',
+          service: payload.service ?? '',
+          planId: payload.planId,
+          planName: payload.planName,
+          planPrice: payload.planPrice,
+          source: payload.source,
+          payload,
+          ip: meta?.ip ?? null,
+          userAgent: meta?.userAgent ?? null,
+        });
+      } else {
+        await insertContact(env, {
+          name: payload.name ?? '',
+          company: payload.company ?? '',
+          phone: payload.phone ?? '',
+          email: payload.email ?? '',
+          instagram: payload.instagram ?? '',
+          interestedService: payload.interestedService ?? '',
+          monthlyAdBudget: payload.monthlyAdBudget ?? '',
+          message: payload.message ?? '',
+          payload,
+          ip: meta?.ip ?? null,
+          userAgent: meta?.userAgent ?? null,
+        });
+      }
+    }
 
     const mail = buildMail(payload);
 
