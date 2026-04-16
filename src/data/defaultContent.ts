@@ -1,23 +1,27 @@
 import {
-  agencySignals,
   blogPosts,
   caseStudies,
   contactInfo,
+  creatorLayerItems,
   faqs,
+  growthStages,
   legalLinks,
   navItems,
   pricingPlans,
+  problemItems,
   processSteps,
-  serviceCategories,
   socialLinks,
   stats,
+  systemSteps,
 } from './siteData';
 
 export const defaultContent = {
   navItems,
   stats,
-  agencySignals,
-  serviceCategories,
+  problemItems,
+  systemSteps,
+  growthStages,
+  creatorLayerItems,
   processSteps,
   caseStudies,
   pricingPlans,
@@ -26,85 +30,100 @@ export const defaultContent = {
   contactInfo,
   socialLinks,
   legalLinks,
-  hero: {
-    badge: 'Dijital büyümenin yeni adresi',
-    title: 'Premium görünüm, net mesaj ve',
-    highlight: 'daha fazla talep üreten sistemler',
-    subtitle:
-      'Lunara Medya; hizmet ve premium algı odaklı markalar için web sitesi, landing page, Meta Ads ve kreatif sistemleri tek çatı altında kurar. Amaç yalnızca şık görünmek değil; daha güçlü güven, daha net başvuru ve daha yüksek dönüşümdür.',
-    primaryCta: 'Ücretsiz Ön Analiz Al',
-    secondaryCta: "WhatsApp'tan Yaz",
+  cta: {
+    primary: 'Growth Fit Görüşmesi Planla',
+    secondary: "WhatsApp'tan Hızlı Ön Değerlendirme",
   },
-  heroServices: ['Web Site Tasarımı', 'Meta Ads', 'Sosyal Medya Reklamcılığı', 'Landing Page', 'Kreatif Sistem'],
-  socialProof: {
-    badge: 'Neden Lunara',
-    title: 'Sadece tasarım değil, sonuç üreten kurgu',
+  hero: {
+    badge: 'Boutique Growth Operator',
+    title: 'Reklam bütçenizi görünürlüğe değil,',
+    highlight: 'müşteri akışına çeviren sistemi kuruyoruz.',
     subtitle:
-      'Web, reklam ve kreatif katmanını tek bir sistemde birleştirerek markanızın güven algısını yükseltir, talep kararını hızlandırırız.',
-    highlightTitle: 'Güven veren görünüm,',
-    highlightHighlight: 'daha net başvuru akışı.',
-    targetTitle: 'Kimler için doğru partneriz?',
-    targetSubtitle:
-      'Her marka için değil, dijitalde premium algı ve düzenli talep akışı hedefleyen işletmeler için en verimli modeli kuruyoruz.',
-    targetSegments: [
-      'Güzellik salonları ve butik beauty markaları',
-      'Premium algı kurmak isteyen hizmet işletmeleri',
-      'Reklam trafiğini boşa harcamak istemeyen markalar',
-      'WhatsApp ve formdan daha net talep akışı arayan ekipler',
-      'Dijitalde daha güvenilir ve daha otoriter görünmek isteyen işletmeler',
-    ],
+      'Lunara Medya; Meta Ads, dönüşüm odaklı landing sayfalar ve creator-performans katmanını tek operasyonda birleştirir. Hedefimiz net: daha nitelikli talep, daha güçlü güven, daha yüksek kapanış potansiyeli.',
+  },
+  problemSection: {
+    badge: 'Gerçek Problem',
+    title: 'Neden iyi işletmeler dijitalde zayıf sonuç alıyor?',
+    subtitle:
+      'Çoğu marka reklamı artırıyor ama sistemi kurmuyor. Sonuç: yükselen maliyet, düşük lead kalitesi ve dağınık satış akışı.',
+    cta: 'Sistemsiz trafiği bırak, talep sistemini kuralım.',
+  },
+  systemSection: {
+    badge: 'Demand Operating System',
+    title: 'Hizmet listesi değil, işletilen büyüme modeli.',
+    subtitle:
+      'Reklamdan müşteriye uzanan talep hattını tek bir operasyon disipliniyle kuruyor, ölçüyor ve iyileştiriyoruz.',
+    cta: 'Sadece kampanya değil, işletilen büyüme altyapısı istiyorum.',
   },
   servicesSection: {
-    title: 'Markanızı büyüten hizmet katmanları',
+    badge: 'Growth Stages',
+    title: 'Büyüme Aşamaları',
     subtitle:
-      'Web tasarımı, reklam yönetimi ve kreatif yön tek başına değil, birbirini besleyen tek bir büyüme sistemi olarak çalıştığında gerçek etki ortaya çıkar.',
+      'Her marka aynı noktadan başlamaz. Hangi aşamada olduğunuzu netleyip doğru yatırımla ilerleriz.',
+    cta: 'Markanızın doğru aşamasını birlikte netleştirelim.',
+  },
+  creatorSection: {
+    badge: 'Creator Performance Layer',
+    title: 'Creator yaklaşımını içerik değil, performans katmanı olarak kuruyoruz.',
+    subtitle:
+      'Bu yapı, reklam performansını artırmak için kontrollü biçimde geliştirdiğimiz stratejik bir katmandır.',
+    honestyTitle: 'Dürüst not',
+    honestyText:
+      'Geniş ölçekli creator ağı iddiası sunmuyoruz. Bu katmanı seçili projelerde kontrollü şekilde devreye alıyor ve veriye göre büyütüyoruz.',
+    cta: 'Creator katmanını performans için nasıl konumlarız, birlikte değerlendirelim.',
   },
   casesSection: {
-    badge: 'Referanslar',
-    title: 'Seçili referanslarımız',
+    badge: 'Vaka Hikayeleri',
+    title: 'Tasarım değil, ticari etki odaklı dönüşümler.',
     subtitle:
-      'Farklı sektörlerde kurduğumuz iki farklı premium yaklaşım, tasarım dilini ve kullanıcı kararını nasıl güçlendirdiğimizi net biçimde gösteriyor.',
+      'Metrik uydurmadan; karar akışı, güven algısı ve dönüşüm hazırlığını nasıl güçlendirdiğimizi gösteriyoruz.',
   },
   packagesSection: {
     badge: 'Çalışma Modelleri',
-    title: 'İhtiyaca göre ölçeklenen paketler',
+    title: 'Hizmet değil, sonuç odaklı modeller',
     subtitle:
-      'Bazı markalar için güçlü bir başlangıç yeterlidir, bazıları ise web ve reklam sistemini birlikte kurmak ister. Paketleri buna göre şekillendiriyoruz.',
+      'Paketler başlangıç çerçevesidir. Kapsam, hedef ve operasyon ihtiyacına göre keşif sonrasında netleştirilir.',
     footnote:
-      'Paketler başlangıç çerçevesidir. Nihai kapsam; marka yapısı, sayfa yoğunluğu ve reklam ihtiyacına göre netleşir.',
+      'Paket bedelleri hizmet kapsamıdır. Reklam bütçesi platformlara ayrıca ödenir.',
   },
   processSection: {
-    badge: '4 Adımda İlerleme',
-    title: 'Net süreç, net ilerleme',
+    badge: '4 Adımda Operasyon',
+    title: 'Planlı, ölçülebilir ve karar odaklı ilerleme',
     subtitle:
-      'Belirsiz revize döngüleri yerine; önce yön, sonra tasarım ve build, ardından ölçekleme mantığıyla hızlı ama kontrollü ilerliyoruz.',
+      'Dağınık revize döngüleri yerine, net teslim ve düzenli optimizasyon ritmiyle ilerliyoruz.',
   },
   faqSection: {
-    badge: 'FAQ',
-    title: 'Karar vermeden önce en çok sorulanlar',
-    subtitle: 'Fiyat, süreç, reklam bütçesi ve teslim modeliyle ilgili kritik soruları net şekilde cevapladık.',
+    badge: 'SSS',
+    title: 'Karar öncesi en kritik sorular',
+    subtitle: 'Çalışma modeli, bütçe, süre ve beklenti yönetimiyle ilgili net cevaplar.',
   },
   contactSection: {
-    badge: 'Contact',
-    title: 'Projeyi birlikte başlatalım',
+    badge: 'Growth Fit Formu',
+    title: 'Markanız için gelir odaklı büyüme çerçevesini çıkaralım',
     subtitle:
-      'Markanızın hedefini, istediğiniz görünümü ve hizmet ihtiyacınızı paylaşın. Size uygun web, reklam ve büyüme modelini net biçimde kuralım.',
-    formBadge: 'Project Brief',
-    formTitle: 'Briefinizi bırakın,',
-    formHighlight: 'güçlü bir başlangıç hazırlayalım.',
-    directBadge: 'Direct Contact',
-    directTitle: 'Hızlı dönüş,',
-    directSubtitle: 'net yol haritası.',
+      'Formu doldurun, size uygun modeli ve ilk 90 günün operasyon planını net biçimde paylaşalım.',
+    formBadge: 'Project Intake',
+    formTitle: 'Birkaç net bilgi bırakın,',
+    formHighlight: 'doğru modeli birlikte belirleyelim.',
+    directBadge: 'Direct Line',
+    directTitle: 'Hızlı değerlendirme,',
+    directSubtitle: 'net yönlendirme.',
+  },
+  finalCtaSection: {
+    badge: 'Karar Noktası',
+    title: 'Markanız için growth operasyonunu başlatmaya hazırsanız, şimdi konuşalım.',
+    subtitle:
+      'Yüzeysel ajans hizmeti yerine, talep ve müşteri akışı kuran bir sistem istiyorsanız ilk adımı birlikte atalım.',
   },
   contactFormOptions: {
-    serviceOptions: [
-      'Web Site Tasarımı',
-      'Landing Page & Funnel',
-      'Meta Ads Yönetimi',
-      'Sosyal Medya Reklamcılığı',
-      'Google Ads & Arama',
-      'Tam Kapsam Çalışma',
+    sectorOptions: [
+      'Güzellik / Estetik',
+      'Klinik / Sağlık Hizmeti',
+      'Premium Hizmet İşletmesi',
+      'Kişisel Marka',
+      'Diğer',
     ],
+    serviceOptions: ['Foundation Launch', 'Demand Engine', 'Growth Operator', 'Özel Kapsam Değerlendirme'],
     budgetOptions: [
       'Henüz belirlenmedi',
       '15.000 TL altı',
@@ -112,11 +131,13 @@ export const defaultContent = {
       '30.000 TL - 60.000 TL',
       '60.000 TL ve üzeri',
     ],
+    goalOptions: ['Daha fazla lead', 'Daha fazla randevu', 'Satış dönüşümünü artırma', 'Premium marka otoritesi'],
+    creatorSupportOptions: ['Evet, değerlendirilebilir', 'Hayır, şu an gerek yok', 'Stratejiye göre karar verelim'],
   },
   footer: {
     description:
-      'Dijital büyümenin yeni adresi. Lunara Medya; premium web tasarımı, Meta Ads, sosyal medya reklamcılığı ve kreatif sistemlerle markalara daha güçlü bir dijital görünüm kurar.',
-    ctaLabel: 'Teklif Al',
+      'Lunara Medya, premium hizmet markaları için reklam, landing ve creator-performans katmanını birleştirerek talep sistemi kurar.',
+    ctaLabel: 'Growth Fit Görüşmesi Planla',
   },
 };
 

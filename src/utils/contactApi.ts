@@ -9,8 +9,11 @@ export type ContactApiPayload =
       company: string;
       email: string;
       instagram: string;
+      sector: string;
       interestedService: string;
       monthlyAdBudget: string;
+      primaryGoal: string;
+      creatorSupportNeeded: string;
       message: string;
     })
   | (BasePayload & {

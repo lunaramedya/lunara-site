@@ -9,7 +9,7 @@ type FooterProps = {
 
 export function Footer({ onNavigate }: FooterProps) {
   const { content } = useSiteContent();
-  const serviceNames = content.serviceCategories.flatMap((group) => group.items.map((item) => item.title));
+  const stageNames = content.growthStages.map((stage) => stage.title);
   const whatsappHref = `https://wa.me/${content.contactInfo.whatsapp}`;
   const mailtoHref = `mailto:${content.contactInfo.email}`;
 
@@ -22,7 +22,7 @@ export function Footer({ onNavigate }: FooterProps) {
             {content.footer.description}
           </p>
           <Button variant="secondary" onClick={() => onNavigate('contact')} className="mx-auto md:mx-0">
-            {content.footer.ctaLabel}
+            {content.cta.primary}
           </Button>
         </div>
 
@@ -40,10 +40,10 @@ export function Footer({ onNavigate }: FooterProps) {
         </div>
 
         <div className="md:justify-self-start">
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/52">Hizmetler</p>
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/52">Büyüme Aşamaları</p>
           <ul className="space-y-3 text-sm text-white/70">
-            {serviceNames.map((service) => (
-              <li key={service}>{service}</li>
+            {stageNames.map((stage) => (
+              <li key={stage}>{stage}</li>
             ))}
           </ul>
         </div>

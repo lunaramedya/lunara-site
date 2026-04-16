@@ -75,8 +75,11 @@ export async function ensureSchema(env: EnvSource) {
       phone TEXT NOT NULL,
       email TEXT NOT NULL,
       instagram TEXT NOT NULL,
+      sector TEXT NOT NULL DEFAULT '',
       interested_service TEXT NOT NULL,
       monthly_ad_budget TEXT NOT NULL,
+      primary_goal TEXT NOT NULL DEFAULT '',
+      creator_support_needed TEXT NOT NULL DEFAULT '',
       message TEXT NOT NULL,
       payload JSONB NOT NULL,
       ip TEXT,
@@ -93,6 +96,10 @@ export async function ensureSchema(env: EnvSource) {
       last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `;
+
+  await sql`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS sector TEXT NOT NULL DEFAULT '';`;
+  await sql`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS primary_goal TEXT NOT NULL DEFAULT '';`;
+  await sql`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS creator_support_needed TEXT NOT NULL DEFAULT '';`;
 
   await sql`CREATE INDEX IF NOT EXISTS idx_event_logs_created_at ON event_logs (created_at DESC);`;
   await sql`CREATE INDEX IF NOT EXISTS idx_event_logs_type ON event_logs (event_type);`;
@@ -213,8 +220,11 @@ export async function insertContact(env: EnvSource, data: {
   phone: string;
   email: string;
   instagram: string;
+  sector: string;
   interestedService: string;
   monthlyAdBudget: string;
+  primaryGoal: string;
+  creatorSupportNeeded: string;
   message: string;
   payload: unknown;
   ip?: string | null;
@@ -233,8 +243,11 @@ export async function insertContact(env: EnvSource, data: {
       phone,
       email,
       instagram,
+      sector,
       interested_service,
       monthly_ad_budget,
+      primary_goal,
+      creator_support_needed,
       message,
       payload,
       ip,
@@ -246,8 +259,11 @@ export async function insertContact(env: EnvSource, data: {
       ${data.phone},
       ${data.email},
       ${data.instagram},
+      ${data.sector},
       ${data.interestedService},
       ${data.monthlyAdBudget},
+      ${data.primaryGoal},
+      ${data.creatorSupportNeeded},
       ${data.message},
       ${data.payload}::jsonb,
       ${data.ip ?? null},

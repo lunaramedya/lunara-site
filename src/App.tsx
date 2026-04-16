@@ -5,13 +5,16 @@ import { Footer } from './components/layout/Footer';
 import { Navbar } from './components/layout/Navbar';
 import { CaseStudiesSection } from './components/sections/CaseStudiesSection';
 import { ContactSection } from './components/sections/ContactSection';
+import { CreatorAdvantageSection } from './components/sections/CreatorAdvantageSection';
 import { FAQSection } from './components/sections/FAQSection';
+import { FinalCTASection } from './components/sections/FinalCTASection';
 import { FloatingWhatsApp } from './components/sections/FloatingWhatsApp';
 import { HeroSection } from './components/sections/HeroSection';
 import { PackagesSection } from './components/sections/PackagesSection';
+import { ProblemSection } from './components/sections/ProblemSection';
 import { ProcessSection } from './components/sections/ProcessSection';
 import { ServicesSection } from './components/sections/ServicesSection';
-import { SocialProofSection } from './components/sections/SocialProofSection';
+import { SystemSection } from './components/sections/SystemSection';
 import { Button } from './components/ui/Button';
 import { Input } from './components/ui/Input';
 import { Modal } from './components/ui/Modal';
@@ -28,26 +31,19 @@ type LeadFormValues = {
 };
 
 const defaultLeadServiceOptions = [
-  'Web Site Tasarımı',
-  'Landing Page & Funnel',
-  'Meta Ads Yönetimi',
-  'Sosyal Medya Reklamcılığı',
-  'Tam Kapsam Çalışma',
+  'Foundation Launch',
+  'Demand Engine',
+  'Growth Operator',
+  'Özel Kapsam Değerlendirme',
 ];
 
 const planScopedServiceOptions: Record<string, string[]> = {
-  starter: ['Web Site Tasarımı', 'Landing Page & Funnel', 'Meta Ads Yönetimi'],
-  growth: ['Web Site Tasarımı', 'Landing Page & Funnel', 'Meta Ads Yönetimi', 'Sosyal Medya Reklamcılığı'],
-  signature: [
-    'Web Site Tasarımı',
-    'Landing Page & Funnel',
-    'Meta Ads Yönetimi',
-    'Sosyal Medya Reklamcılığı',
-    'Tam Kapsam Çalışma',
-  ],
+  foundation: ['Foundation Launch', 'Demand Engine'],
+  demand: ['Demand Engine', 'Growth Operator'],
+  operator: ['Growth Operator', 'Özel Kapsam Değerlendirme'],
 };
 
-const observedSections = ['hero', 'services', 'cases', 'packages', 'process', 'faq', 'contact'];
+const observedSections = ['hero', 'problem', 'system', 'stages', 'creator', 'cases', 'packages', 'process', 'faq', 'contact', 'final-cta'];
 
 function isPricingPlan(value: unknown): value is PricingPlan {
   if (!value || typeof value !== 'object') {
@@ -234,8 +230,8 @@ function App() {
 
   return (
     <div className="relative overflow-x-clip bg-[var(--color-bg)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px] bg-[radial-gradient(circle_at_15%_0%,rgba(143,238,255,0.2),transparent_30%),radial-gradient(circle_at_85%_8%,rgba(143,134,255,0.18),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-[22rem] -z-10 h-[920px] bg-[radial-gradient(circle_at_78%_22%,rgba(143,238,255,0.12),transparent_24%),radial-gradient(circle_at_18%_12%,rgba(143,134,255,0.12),transparent_22%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px] bg-[radial-gradient(circle_at_14%_0%,rgba(123,161,187,0.18),transparent_30%),radial-gradient(circle_at_84%_8%,rgba(216,200,163,0.16),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.015),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[22rem] -z-10 h-[920px] bg-[radial-gradient(circle_at_74%_22%,rgba(123,161,187,0.09),transparent_24%),radial-gradient(circle_at_22%_14%,rgba(216,200,163,0.08),transparent_22%)]" />
 
       <Navbar
         activeSection={activeSection}
@@ -245,13 +241,16 @@ function App() {
 
       <main>
         <HeroSection onNavigate={navigateTo} onOpenLeadModal={() => openLeadModal(null, 'generic_cta')} />
-        <SocialProofSection />
+        <ProblemSection />
+        <SystemSection />
         <ServicesSection />
+        <CreatorAdvantageSection />
         <CaseStudiesSection />
         <PackagesSection onOpenLeadModal={openLeadModal} />
         <ProcessSection />
         <FAQSection />
         <ContactSection emphasized={contactEmphasized} />
+        <FinalCTASection onOpenLeadModal={() => openLeadModal(null, 'generic_cta')} />
       </main>
 
       <Footer onNavigate={navigateTo} />
@@ -265,7 +264,7 @@ function App() {
           setLeadSource('generic_cta');
           reset();
         }}
-        title={selectedPlan ? `${selectedPlan.priceLabel ?? 'Paket'} Teklif Formu` : 'Teklif Formu'}
+        title={selectedPlan ? `${selectedPlan.name} - Growth Fit` : 'Growth Fit Görüşmesi'}
       >
         <form className="space-y-4" onSubmit={handleSubmit(handleLeadSubmit)} noValidate>
           <Input
@@ -320,7 +319,7 @@ function App() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Gönderiliyor...' : 'Teklif Gönder'}
+            {isSubmitting ? 'Gönderiliyor...' : 'Growth Fit Görüşmesi Planla'}
           </Button>
         </form>
       </Modal>

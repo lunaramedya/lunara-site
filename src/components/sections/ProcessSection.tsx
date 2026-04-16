@@ -7,7 +7,7 @@ import { SectionTitle } from '../ui/SectionTitle';
 export function ProcessSection() {
   const { content } = useSiteContent();
   return (
-    <SectionContainer id="process" className="scroll-mt-24 bg-[linear-gradient(180deg,#0b1426,#060c18)]">
+    <SectionContainer id="process" className="scroll-mt-24 bg-[linear-gradient(180deg,#0d1725,#08111d)]">
       <SectionTitle
         title={content.processSection.title}
         subtitle={content.processSection.subtitle}

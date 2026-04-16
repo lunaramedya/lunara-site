@@ -51,7 +51,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
         </nav>
 
         <div className="hidden md:block">
-          <Button onClick={() => onOpenLeadModal()}>Teklif Al</Button>
+          <Button onClick={() => onOpenLeadModal()}>{content.cta.primary}</Button>
         </div>
 
         <button
@@ -96,7 +96,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
                   onOpenLeadModal();
                 }}
               >
-                Teklif Al
+                {content.cta.primary}
               </Button>
             </nav>
           </motion.div>

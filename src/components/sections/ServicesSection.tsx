@@ -1,94 +1,70 @@
 import { motion } from 'framer-motion';
-import {
-  Megaphone,
-  MessagesSquare,
-  MonitorSmartphone,
-  Palette,
-  Search,
-  Workflow,
-} from 'lucide-react';
-import { memo } from 'react';
 import { useSiteContent } from '../../context/SiteContentContext';
-import type { ServiceItem } from '../../types/site';
 import { SectionContainer } from '../layout/SectionContainer';
+import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
-import { SectionTitle } from '../ui/SectionTitle';
-
-const iconMap = {
-  megaphone: Megaphone,
-  search: Search,
-  palette: Palette,
-  'messages-square': MessagesSquare,
-  'monitor-smartphone': MonitorSmartphone,
-  workflow: Workflow,
-} as const;
-
-type ServiceCardProps = {
-  item: ServiceItem;
-};
-
-const ServiceCard = memo(function ServiceCard({ item }: ServiceCardProps) {
-  const Icon = iconMap[item.icon as keyof typeof iconMap] ?? Megaphone;
-
-  return (
-    <Card className="h-full transition hover:-translate-y-1 hover:border-[var(--color-primary)]/40 hover:shadow-[0_30px_70px_rgba(2,8,20,0.46)]">
-      <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-accent))] text-[#06101f] shadow-[0_18px_36px_rgba(111,134,255,0.3)]">
-        <Icon size={20} />
-      </div>
-      <h3
-        className="text-3xl leading-none text-[var(--color-ink)]"
-        style={{ fontFamily: 'var(--font-display)' }}
-      >
-        {item.title}
-      </h3>
-      <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{item.description}</p>
-      <ul className="mt-5 space-y-2">
-        {item.benefits.map((benefit) => (
-          <li key={benefit} className="flex items-start gap-2 text-sm leading-6 text-[var(--color-ink)]">
-            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]" />
-            <span>{benefit}</span>
-          </li>
-        ))}
-      </ul>
-    </Card>
-  );
-});
 
 export function ServicesSection() {
   const { content } = useSiteContent();
-  return (
-    <SectionContainer id="services" className="scroll-mt-24">
-      <SectionTitle
-        title={content.servicesSection.title}
-        subtitle={content.servicesSection.subtitle}
-      />
 
-      <div className="mt-10 space-y-10 sm:mt-12 sm:space-y-12">
-        {content.serviceCategories.map((category, groupIndex) => (
-          <div key={category.id}>
-            <div className="mb-5 flex items-center gap-4">
-              <span className="h-px flex-1 bg-[var(--color-border-strong)]" />
-              <h3 className="text-center text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-muted)] sm:text-sm sm:tracking-[0.28em]">
-                {category.title}
+  return (
+    <SectionContainer id="stages" className="scroll-mt-24">
+      <div className="max-w-3xl space-y-4">
+        <Badge>{content.servicesSection.badge}</Badge>
+        <h2
+          className="text-3xl leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)] sm:text-4xl md:text-5xl"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
+          {content.servicesSection.title}
+        </h2>
+        <p className="text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg">{content.servicesSection.subtitle}</p>
+      </div>
+
+      <div className="mt-8 grid gap-5 lg:grid-cols-3">
+        {content.growthStages.map((stage, index) => (
+          <motion.div
+            key={stage.id}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.34, delay: index * 0.08 }}
+          >
+            <Card className="h-full border-[var(--color-border)] bg-[var(--color-surface-strong)]">
+              <h3
+                className="text-3xl leading-none text-[var(--color-ink)]"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                {stage.title}
               </h3>
-              <span className="h-px flex-1 bg-[var(--color-border-strong)]" />
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {category.items.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ y: 18, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ duration: 0.32, delay: groupIndex * 0.1 + index * 0.06 }}
-                >
-                  <ServiceCard item={item} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
+
+              <div className="mt-5 space-y-4 text-sm leading-7">
+                <p className="text-[var(--color-muted)]">
+                  <span className="font-semibold text-[var(--color-ink)]">Kim için:</span> {stage.bestFor}
+                </p>
+                <p className="text-[var(--color-muted)]">
+                  <span className="font-semibold text-[var(--color-ink)]">Ne kurulur:</span> {stage.build}
+                </p>
+                <p className="text-[var(--color-muted)]">
+                  <span className="font-semibold text-[var(--color-ink)]">Sonuç odağı:</span> {stage.outcome}
+                </p>
+              </div>
+
+              <ul className="mt-5 space-y-2">
+                {stage.points.map((point) => (
+                  <li key={point} className="flex items-start gap-2 text-sm text-[var(--color-ink)]">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </motion.div>
         ))}
       </div>
+
+      <p className="mt-6 text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-primary-strong)]">
+        {content.servicesSection.cta}
+      </p>
     </SectionContainer>
   );
 }

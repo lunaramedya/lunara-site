@@ -4,42 +4,31 @@ export type NavItem = {
   href: string;
 };
 
-export type ReferenceBrand = {
-  id: 'loli' | 'master';
-  name: string;
-  sector: string;
-  signature: string;
-  description: string;
-  highlights: string[];
-};
-
-export type AgencySignal = {
+export type ProblemItem = {
   id: string;
   title: string;
   description: string;
 };
 
-export type Testimonial = {
-  id: string;
-  name: string;
-  role: string;
-  company: string;
-  quote: string;
-  metric: string;
-};
-
-export type ServiceItem = {
+export type SystemStep = {
   id: string;
   title: string;
-  icon: string;
   description: string;
-  benefits: string[];
 };
 
-export type ServiceCategory = {
+export type GrowthStage = {
   id: string;
   title: string;
-  items: ServiceItem[];
+  bestFor: string;
+  build: string;
+  outcome: string;
+  points: string[];
+};
+
+export type CreatorLayerItem = {
+  id: string;
+  title: string;
+  description: string;
 };
 
 export type ProcessStep = {
@@ -54,23 +43,21 @@ export type CaseStudy = {
   id: string;
   title: string;
   category: CaseCategory;
-  summary: string;
-  metric: string;
-  image: string;
-  problem?: string;
-  solution?: string;
-  outcome?: string;
-  services?: string[];
-  highlights?: string[];
+  challenge: string;
+  changed: string;
+  impact: string;
+  image?: string;
 };
 
 export type PricingPlan = {
   id: string;
   name: string;
   priceTRY: string;
-  priceLabel?: string;
+  badge?: string;
+  bestFor: string;
   description: string;
-  features: string[];
+  outcome: string;
+  includes: string[];
   recommended?: boolean;
 };
 

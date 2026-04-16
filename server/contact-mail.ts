@@ -11,8 +11,11 @@ export type ContactPayload = BasePayload & {
   company?: string;
   email?: string;
   instagram?: string;
+  sector?: string;
   interestedService?: string;
   monthlyAdBudget?: string;
+  primaryGoal?: string;
+  creatorSupportNeeded?: string;
   message?: string;
 };
 
@@ -83,8 +86,11 @@ function validatePayload(payload: unknown): payload is MailPayload {
       ensureText(data.phone, 10) &&
       ensureText(data.email, 5) &&
       ensureText(data.instagram, 2) &&
+      ensureText(data.sector, 2) &&
       ensureText(data.interestedService, 2) &&
       ensureText(data.monthlyAdBudget, 2) &&
+      ensureText(data.primaryGoal, 2) &&
+      ensureText(data.creatorSupportNeeded, 2) &&
       ensureText(data.message, 10)
     );
   }
@@ -132,8 +138,11 @@ function buildMail(payload: MailPayload) {
       `Telefon: ${payload.phone}`,
       `E-posta: ${payload.email}`,
       `Instagram: ${payload.instagram}`,
-      `İlgilendiği Hizmet: ${payload.interestedService}`,
+      `Sektör: ${payload.sector}`,
+      `İlgilendiği Model/Hizmet: ${payload.interestedService}`,
       `Aylık Reklam Bütçesi: ${payload.monthlyAdBudget}`,
+      `Birincil Hedef: ${payload.primaryGoal}`,
+      `Creator Desteği: ${payload.creatorSupportNeeded}`,
       '',
       'Proje Notu:',
       payload.message,
@@ -148,8 +157,11 @@ function buildMail(payload: MailPayload) {
           <tr><td style="padding:8px 0;font-weight:700">Telefon</td><td style="padding:8px 0">${escapeHtml(payload.phone ?? '')}</td></tr>
           <tr><td style="padding:8px 0;font-weight:700">E-posta</td><td style="padding:8px 0">${escapeHtml(payload.email ?? '')}</td></tr>
           <tr><td style="padding:8px 0;font-weight:700">Instagram</td><td style="padding:8px 0">${escapeHtml(payload.instagram ?? '')}</td></tr>
-          <tr><td style="padding:8px 0;font-weight:700">İlgilendiği Hizmet</td><td style="padding:8px 0">${escapeHtml(payload.interestedService ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">Sektör</td><td style="padding:8px 0">${escapeHtml(payload.sector ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">İlgilendiği Model/Hizmet</td><td style="padding:8px 0">${escapeHtml(payload.interestedService ?? '')}</td></tr>
           <tr><td style="padding:8px 0;font-weight:700">Aylık Reklam Bütçesi</td><td style="padding:8px 0">${escapeHtml(payload.monthlyAdBudget ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">Birincil Hedef</td><td style="padding:8px 0">${escapeHtml(payload.primaryGoal ?? '')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:700">Creator Desteği</td><td style="padding:8px 0">${escapeHtml(payload.creatorSupportNeeded ?? '')}</td></tr>
         </table>
         <div style="margin-top:20px;padding:18px;border-radius:16px;background:#eef6ff;border:1px solid #c7d2fe">
           <div style="font-weight:700;margin-bottom:10px">Proje Notu</div>
@@ -250,8 +262,11 @@ export async function submitMailRequest(
           phone: payload.phone ?? '',
           email: payload.email ?? '',
           instagram: payload.instagram ?? '',
+          sector: payload.sector ?? '',
           interestedService: payload.interestedService ?? '',
           monthlyAdBudget: payload.monthlyAdBudget ?? '',
+          primaryGoal: payload.primaryGoal ?? '',
+          creatorSupportNeeded: payload.creatorSupportNeeded ?? '',
           message: payload.message ?? '',
           payload,
           ip: meta?.ip ?? null,
