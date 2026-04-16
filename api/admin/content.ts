@@ -36,38 +36,45 @@ function getToken(headers: Record<string, string> | undefined) {
 }
 
 export default async function handler(req: RequestLike, res: ResponseLike) {
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Allow', 'GET, PUT, OPTIONS');
-    res.status(204).end();
-    return;
-  }
-
-  const token = getToken(req.headers);
-  const isAdmin = await requireAdmin(process.env, token);
-
-  if (!isAdmin) {
-    res.status(401).json({ ok: false, message: 'Yetkisiz erişim.' });
-    return;
-  }
-
-  if (req.method === 'GET') {
-    const content = await getContent(process.env, 'site');
-    res.status(200).json({ ok: true, content });
-    return;
-  }
-
-  if (req.method === 'PUT') {
-    const payload = req.body ?? (await readJsonBody(req));
-    if (!payload || typeof payload !== 'object') {
-      res.status(400).json({ ok: false, message: 'İçerik verisi eksik.' });
+  try {
+    if (req.method === 'OPTIONS') {
+      res.setHeader('Allow', 'GET, PUT, OPTIONS');
+      res.status(204).end();
       return;
     }
 
-    await setContent(process.env, 'site', payload, 'admin');
-    res.status(200).json({ ok: true });
-    return;
-  }
+    const token = getToken(req.headers);
+    const isAdmin = await requireAdmin(process.env, token);
 
-  res.setHeader('Allow', 'GET, PUT, OPTIONS');
-  res.status(405).json({ ok: false, message: 'Bu endpoint yalnızca GET/PUT isteklerini kabul eder.' });
+    if (!isAdmin) {
+      res.status(401).json({ ok: false, message: 'Yetkisiz erişim.' });
+      return;
+    }
+
+    if (req.method === 'GET') {
+      const content = await getContent(process.env, 'site');
+      res.status(200).json({ ok: true, content });
+      return;
+    }
+
+    if (req.method === 'PUT') {
+      const payload = req.body ?? (await readJsonBody(req));
+      if (!payload || typeof payload !== 'object') {
+        res.status(400).json({ ok: false, message: 'İçerik verisi eksik.' });
+        return;
+      }
+
+      await setContent(process.env, 'site', payload, 'admin');
+      res.status(200).json({ ok: true });
+      return;
+    }
+
+    res.setHeader('Allow', 'GET, PUT, OPTIONS');
+    res.status(405).json({ ok: false, message: 'Bu endpoint yalnızca GET/PUT isteklerini kabul eder.' });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : 'Admin içerik işleminde hata oluştu.',
+    });
+  }
 }

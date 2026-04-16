@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { insertContact, insertLead, isDatabaseConfigured } from './db';
+import { insertContact, insertLead, isDatabaseConfigured } from './db.js';
 
 type BasePayload = {
   name?: string;

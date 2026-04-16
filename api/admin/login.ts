@@ -1,5 +1,4 @@
 import { createSession, verifyAdminPassword } from '../../server/admin-auth.js';
-import { isDatabaseConfigured } from '../../server/db.js';
 
 type RequestLike = AsyncIterable<Uint8Array> & {
   method?: string;
@@ -39,11 +38,6 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   }
 
   try {
-    if (!isDatabaseConfigured(process.env)) {
-      res.status(500).json({ ok: false, message: 'DATABASE_URL tanımlı değil.' });
-      return;
-    }
-
     const payload = req.body ?? (await readJsonBody(req));
     const password = payload?.password;
 

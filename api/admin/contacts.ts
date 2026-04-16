@@ -37,27 +37,34 @@ function getLimit(url?: string) {
 }
 
 export default async function handler(req: RequestLike, res: ResponseLike) {
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Allow', 'GET, OPTIONS');
-    res.status(204).end();
-    return;
+  try {
+    if (req.method === 'OPTIONS') {
+      res.setHeader('Allow', 'GET, OPTIONS');
+      res.status(204).end();
+      return;
+    }
+
+    const token = getToken(req.headers);
+    const isAdmin = await requireAdmin(process.env, token);
+
+    if (!isAdmin) {
+      res.status(401).json({ ok: false, message: 'Yetkisiz erişim.' });
+      return;
+    }
+
+    if (req.method !== 'GET') {
+      res.setHeader('Allow', 'GET, OPTIONS');
+      res.status(405).json({ ok: false, message: 'Bu endpoint yalnızca GET isteklerini kabul eder.' });
+      return;
+    }
+
+    const limit = getLimit(req.url);
+    const rows = await runQuery(process.env, 'SELECT * FROM contacts ORDER BY created_at DESC LIMIT $1', [limit]);
+    res.status(200).json({ ok: true, items: rows });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : 'İletişim verileri alınırken hata oluştu.',
+    });
   }
-
-  const token = getToken(req.headers);
-  const isAdmin = await requireAdmin(process.env, token);
-
-  if (!isAdmin) {
-    res.status(401).json({ ok: false, message: 'Yetkisiz erişim.' });
-    return;
-  }
-
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET, OPTIONS');
-    res.status(405).json({ ok: false, message: 'Bu endpoint yalnızca GET isteklerini kabul eder.' });
-    return;
-  }
-
-  const limit = getLimit(req.url);
-  const rows = await runQuery(process.env, 'SELECT * FROM contacts ORDER BY created_at DESC LIMIT $1', [limit]);
-  res.status(200).json({ ok: true, items: rows });
 }
