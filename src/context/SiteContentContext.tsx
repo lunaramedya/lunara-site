@@ -5,12 +5,20 @@ type SiteContentState = {
   content: SiteContent;
   loading: boolean;
   refresh: () => Promise<void>;
+  editMode: boolean;
+  toggleEditMode: () => void;
+  updateContentField: (path: string, value: any) => void;
+  saveContent: () => Promise<void>;
 };
 
 const SiteContentContext = createContext<SiteContentState>({
   content: defaultContent,
   loading: true,
   refresh: async () => {},
+  editMode: false,
+  toggleEditMode: () => {},
+  updateContentField: () => {},
+  saveContent: async () => {},
 });
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -52,6 +60,10 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
   const [content, setContent] = useState<SiteContent>(defaultContent);
   const [loading, setLoading] = useState(true);
 
+  const [editMode, setEditMode] = useState(false);
+
+  const [dirty, setDirty] = useState(false);
+
   const refresh = useCallback(async () => {
     try {
       setLoading(true);
@@ -69,6 +81,54 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
     }
   }, []);
 
+  const toggleEditMode = () => setEditMode((prev) => !prev);
+
+  const updateContentField = (path: string, value: any) => {
+    setContent((prev) => {
+      const keys = path.split('.');
+      const newContent: any = { ...prev };
+      let current = newContent;
+
+      keys.forEach((key, index) => {
+        if (index === keys.length - 1) {
+          current[key] = value;
+        } else {
+          current[key] = { ...current[key] };
+          current = current[key];
+        }
+      });
+
+      return newContent;
+    });
+
+    setDirty(true);
+  };
+
+  useEffect(() => {
+    if (!editMode) return;
+    if (!dirty) return;
+
+    const timeout = setTimeout(() => {
+      saveContent();
+      setDirty(false);
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [content]);
+
+  const saveContent = async () => {
+    try {
+      await fetch('/api/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
+      console.log('Content auto-saved');
+    } catch (err) {
+      console.error('Save failed', err);
+    }
+  };
+
   useEffect(() => {
     void refresh();
   }, [refresh]);
@@ -78,8 +138,12 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       content,
       loading,
       refresh,
+      editMode,
+      toggleEditMode,
+      updateContentField,
+      saveContent,
     }),
-    [content, loading, refresh],
+    [content, loading, refresh, editMode],
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;

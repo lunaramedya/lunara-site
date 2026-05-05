@@ -5,13 +5,41 @@ import { Badge } from '../ui/Badge';
 import { SectionTitle } from '../ui/SectionTitle';
 
 export function ProcessSection() {
-  const { content } = useSiteContent();
+  const { content, editMode, updateContentField, saveContent } = useSiteContent();
   return (
     <SectionContainer id="process" className="scroll-mt-24 bg-[linear-gradient(180deg,#0d1725,#08111d)]">
       <SectionTitle
-        title={content.processSection.title}
-        subtitle={content.processSection.subtitle}
-        badge={<Badge className="border-white/14 bg-white/8 text-white/78">{content.processSection.badge}</Badge>}
+        title={editMode ? (
+          <input
+            value={content.processSection.title}
+            onChange={(e) => updateContentField('processSection.title', e.target.value)}
+            className="w-full bg-transparent text-white outline-none"
+          />
+        ) : (
+          content.processSection.title
+        )}
+        subtitle={editMode ? (
+          <textarea
+            value={content.processSection.subtitle}
+            onChange={(e) => updateContentField('processSection.subtitle', e.target.value)}
+            className="w-full bg-transparent text-white/70 outline-none"
+          />
+        ) : (
+          content.processSection.subtitle
+        )}
+        badge={
+          <Badge className="border-white/14 bg-white/8 text-white/78">
+            {editMode ? (
+              <input
+                value={content.processSection.badge}
+                onChange={(e) => updateContentField('processSection.badge', e.target.value)}
+                className="bg-transparent text-white/80 text-sm outline-none"
+              />
+            ) : (
+              content.processSection.badge
+            )}
+          </Badge>
+        }
         tone="inverse"
       />
 
@@ -32,12 +60,36 @@ export function ProcessSection() {
               className="text-3xl leading-none text-white"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              {step.title}
+              {editMode ? (
+                <input
+                  value={step.title}
+                  onChange={(e) => updateContentField(`processSteps.${index}.title`, e.target.value)}
+                  className="w-full bg-transparent text-white text-3xl outline-none"
+                />
+              ) : (
+                step.title
+              )}
             </h3>
-            <p className="mt-4 text-sm leading-7 text-white/70">{step.description}</p>
+            <p className="mt-4 text-sm leading-7 text-white/70">{editMode ? (
+              <textarea
+                value={step.description}
+                onChange={(e) => updateContentField(`processSteps.${index}.description`, e.target.value)}
+                className="w-full bg-transparent text-white/70 outline-none"
+              />
+            ) : (
+              step.description
+            )}</p>
           </motion.div>
         ))}
       </div>
+      {editMode && (
+        <button
+          onClick={saveContent}
+          className="mt-6 rounded bg-green-600 px-4 py-2 text-sm text-white"
+        >
+          Kaydet
+        </button>
+      )}
     </SectionContainer>
   );
 }

@@ -14,7 +14,7 @@ type NavbarProps = {
 
 export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarProps) {
   const [open, setOpen] = useState(false);
-  const { content } = useSiteContent();
+  const { content, editMode, toggleEditMode } = useSiteContent();
 
   const handleNav = (id: string) => {
     onNavigate(id);
@@ -50,8 +50,24 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
           ))}
         </nav>
 
-        <div className="hidden md:block">
-          <Button onClick={() => onOpenLeadModal()}>{content.cta.primary}</Button>
+        <div className="hidden md:flex items-center gap-2">
+          {editMode && (
+            <button
+              onClick={toggleEditMode}
+              className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
+            >
+              Edit Kapat
+            </button>
+          )}
+          {!editMode && (
+            <button
+              onClick={toggleEditMode}
+              className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
+            >
+              Edit Aç
+            </button>
+          )}
+          <Button onClick={onOpenLeadModal}>{content.cta.primary}</Button>
         </div>
 
         <button
@@ -89,6 +105,12 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
                   {item.label}
                 </button>
               ))}
+              <button
+                onClick={toggleEditMode}
+                className="mt-2 rounded-2xl px-4 py-3 text-left text-sm font-medium bg-white/6 text-white"
+              >
+                {editMode ? 'Edit Kapat' : 'Edit Aç'}
+              </button>
               <Button
                 className="mt-2 w-full"
                 onClick={() => {

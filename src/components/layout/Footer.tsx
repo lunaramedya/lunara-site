@@ -12,6 +12,7 @@ export function Footer({ onNavigate }: FooterProps) {
   const stageNames = content.growthStages.map((stage) => stage.title);
   const whatsappHref = `https://wa.me/${content.contactInfo.whatsapp}`;
   const mailtoHref = `mailto:${content.contactInfo.email}`;
+  const contactRowClass = 'flex items-start justify-center gap-2 text-center md:justify-start md:text-left';
 
   return (
     <footer className="border-t border-white/10 bg-[linear-gradient(180deg,#07101d,#040813)] text-white">
@@ -51,25 +52,25 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="md:justify-self-start">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/52">İletişim</p>
           <ul className="space-y-3 text-sm text-white/70">
-            <li className="flex items-start justify-center gap-2 text-center md:justify-start md:text-left">
-                <Phone size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
-                <a href={whatsappHref} target="_blank" rel="noreferrer" className="transition hover:text-white">
-                  {content.contactInfo.phone}
-                </a>
-              </li>
-              <li className="flex items-start justify-center gap-2 text-center md:justify-start md:text-left">
-                <Mail size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
-                <a href={mailtoHref} className="transition hover:text-white">
-                  {content.contactInfo.email}
-                </a>
-              </li>
-              <li className="flex items-start justify-center gap-2 text-center md:justify-start md:text-left">
-                <Instagram size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
-                <a href={content.contactInfo.instagramUrl} target="_blank" rel="noreferrer" className="transition hover:text-white">
-                  {content.contactInfo.instagramHandle}
-                </a>
-              </li>
-            </ul>
+            <li className={contactRowClass}>
+              <Phone size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
+              <a href={whatsappHref} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                {content.contactInfo.phone}
+              </a>
+            </li>
+            <li className={contactRowClass}>
+              <Mail size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
+              <a href={mailtoHref} className="transition hover:text-white">
+                {content.contactInfo.email}
+              </a>
+            </li>
+            <li className={contactRowClass}>
+              <Instagram size={15} className="mt-1 shrink-0 text-[var(--color-primary)]" />
+              <a href={content.contactInfo.instagramUrl} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                {content.contactInfo.instagramHandle}
+              </a>
+            </li>
+          </ul>
 
           <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs text-white/44 md:justify-start">
             {content.legalLinks.map((link) => (

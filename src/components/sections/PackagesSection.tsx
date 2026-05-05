@@ -11,19 +11,47 @@ type PackagesSectionProps = {
 };
 
 export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
-  const { content } = useSiteContent();
+  const { content, editMode, updateContentField, saveContent } = useSiteContent();
 
   return (
     <SectionContainer id="packages" className="scroll-mt-24">
       <div className="max-w-3xl space-y-4">
-        <Badge>{content.packagesSection.badge}</Badge>
+        <Badge>
+          {editMode ? (
+            <input
+              value={content.packagesSection.badge}
+              onChange={(e) => updateContentField('packagesSection.badge', e.target.value)}
+              className="bg-transparent text-sm outline-none"
+            />
+          ) : (
+            content.packagesSection.badge
+          )}
+        </Badge>
         <h2
           className="text-3xl leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)] sm:text-4xl md:text-5xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          {content.packagesSection.title}
+          {editMode ? (
+            <input
+              value={content.packagesSection.title}
+              onChange={(e) => updateContentField('packagesSection.title', e.target.value)}
+              className="w-full bg-transparent text-3xl outline-none"
+            />
+          ) : (
+            content.packagesSection.title
+          )}
         </h2>
-        <p className="text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg">{content.packagesSection.subtitle}</p>
+        <p className="text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg">
+          {editMode ? (
+            <textarea
+              value={content.packagesSection.subtitle}
+              onChange={(e) => updateContentField('packagesSection.subtitle', e.target.value)}
+              className="w-full bg-transparent outline-none"
+            />
+          ) : (
+            content.packagesSection.subtitle
+          )}
+        </p>
       </div>
 
       <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -38,21 +66,75 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
             )}
           >
             <Badge className={plan.recommended ? 'mb-4 border-[var(--color-border-strong)] bg-white/8 text-[var(--color-primary)]' : 'mb-4'}>
-              {plan.badge ?? 'Çalışma Modeli'}
+              {editMode ? (
+                <input
+                  value={plan.badge || ''}
+                  onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.badge`, e.target.value)}
+                  className="bg-transparent outline-none"
+                />
+              ) : (
+                plan.badge ?? 'Çalışma Modeli'
+              )}
             </Badge>
 
             <h3 className="mt-2 text-3xl leading-none text-[var(--color-ink)] sm:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
-              {plan.name}
+              {editMode ? (
+                <input
+                  value={plan.name}
+                  onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.name`, e.target.value)}
+                  className="w-full bg-transparent text-3xl outline-none"
+                />
+              ) : (
+                plan.name
+              )}
             </h3>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-primary-strong)]">{plan.priceTRY}</p>
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-primary-strong)]">
+              {editMode ? (
+                <input
+                  value={plan.priceTRY}
+                  onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.priceTRY`, e.target.value)}
+                  className="bg-transparent outline-none"
+                />
+              ) : (
+                plan.priceTRY
+              )}
+            </p>
 
             <div className="mt-5 space-y-3 text-sm leading-7">
               <p className="text-[var(--color-muted)]">
-                <span className="font-semibold text-[var(--color-ink)]">Doğru müşteri:</span> {plan.bestFor}
+                <span className="font-semibold text-[var(--color-ink)]">Doğru müşteri:</span>{' '}
+                {editMode ? (
+                  <input
+                    value={plan.bestFor}
+                    onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.bestFor`, e.target.value)}
+                    className="bg-transparent outline-none"
+                  />
+                ) : (
+                  plan.bestFor
+                )}
               </p>
-              <p className="text-[var(--color-muted)]">{plan.description}</p>
               <p className="text-[var(--color-muted)]">
-                <span className="font-semibold text-[var(--color-ink)]">Odak sonuç:</span> {plan.outcome}
+                {editMode ? (
+                  <textarea
+                    value={plan.description}
+                    onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.description`, e.target.value)}
+                    className="w-full bg-transparent outline-none"
+                  />
+                ) : (
+                  plan.description
+                )}
+              </p>
+              <p className="text-[var(--color-muted)]">
+                <span className="font-semibold text-[var(--color-ink)]">Odak sonuç:</span>{' '}
+                {editMode ? (
+                  <input
+                    value={plan.outcome}
+                    onChange={(e) => updateContentField(`pricingPlans.${content.pricingPlans.indexOf(plan)}.outcome`, e.target.value)}
+                    className="bg-transparent outline-none"
+                  />
+                ) : (
+                  plan.outcome
+                )}
               </p>
             </div>
 
@@ -60,7 +142,22 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
               {plan.includes.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm leading-6 text-[var(--color-ink)]">
                   <CheckCircle2 size={16} className="mt-0.5 text-emerald-500" />
-                  <span>{feature}</span>
+                  <span>
+                    {editMode ? (
+                      <input
+                        value={feature}
+                        onChange={(e) =>
+                          updateContentField(
+                            `pricingPlans.${content.pricingPlans.indexOf(plan)}.includes.${plan.includes.indexOf(feature)}`,
+                            e.target.value,
+                          )
+                        }
+                        className="bg-transparent outline-none"
+                      />
+                    ) : (
+                      feature
+                    )}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -70,13 +167,39 @@ export function PackagesSection({ onOpenLeadModal }: PackagesSectionProps) {
               variant={plan.recommended ? 'primary' : 'outline'}
               onClick={() => onOpenLeadModal(plan, 'package_card')}
             >
-              {content.cta.primary}
+              {editMode ? (
+                <input
+                  value={content.cta.primary}
+                  onChange={(e) => updateContentField('cta.primary', e.target.value)}
+                  className="bg-transparent outline-none"
+                />
+              ) : (
+                content.cta.primary
+              )}
             </Button>
           </article>
         ))}
       </div>
 
-      <p className="mt-5 text-xs text-[var(--color-muted)]">{content.packagesSection.footnote}</p>
+      <p className="mt-5 text-xs text-[var(--color-muted)]">
+        {editMode ? (
+          <textarea
+            value={content.packagesSection.footnote}
+            onChange={(e) => updateContentField('packagesSection.footnote', e.target.value)}
+            className="w-full bg-transparent outline-none"
+          />
+        ) : (
+          content.packagesSection.footnote
+        )}
+      </p>
+      {editMode && (
+        <button
+          onClick={saveContent}
+          className="mt-4 rounded bg-green-600 px-4 py-2 text-sm text-white"
+        >
+          Kaydet
+        </button>
+      )}
     </SectionContainer>
   );
 }

@@ -5,19 +5,47 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 
 export function ServicesSection() {
-  const { content } = useSiteContent();
+  const { content, editMode, updateContentField, saveContent } = useSiteContent();
 
   return (
     <SectionContainer id="stages" className="scroll-mt-24">
       <div className="max-w-3xl space-y-4">
-        <Badge>{content.servicesSection.badge}</Badge>
+        <Badge>
+          {editMode ? (
+            <input
+              value={content.servicesSection.badge}
+              onChange={(e) => updateContentField('servicesSection.badge', e.target.value)}
+              className="bg-transparent text-sm outline-none"
+            />
+          ) : (
+            content.servicesSection.badge
+          )}
+        </Badge>
         <h2
           className="text-3xl leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)] sm:text-4xl md:text-5xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          {content.servicesSection.title}
+          {editMode ? (
+            <input
+              value={content.servicesSection.title}
+              onChange={(e) => updateContentField('servicesSection.title', e.target.value)}
+              className="w-full bg-transparent text-3xl outline-none"
+            />
+          ) : (
+            content.servicesSection.title
+          )}
         </h2>
-        <p className="text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg">{content.servicesSection.subtitle}</p>
+        <p className="text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg">
+          {editMode ? (
+            <textarea
+              value={content.servicesSection.subtitle}
+              onChange={(e) => updateContentField('servicesSection.subtitle', e.target.value)}
+              className="w-full bg-transparent outline-none"
+            />
+          ) : (
+            content.servicesSection.subtitle
+          )}
+        </p>
       </div>
 
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
@@ -34,18 +62,53 @@ export function ServicesSection() {
                 className="text-3xl leading-none text-[var(--color-ink)]"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                {stage.title}
+                {editMode ? (
+                  <input
+                    value={stage.title}
+                    onChange={(e) => updateContentField(`growthStages.${index}.title`, e.target.value)}
+                    className="w-full bg-transparent text-3xl outline-none"
+                  />
+                ) : (
+                  stage.title
+                )}
               </h3>
 
               <div className="mt-5 space-y-4 text-sm leading-7">
                 <p className="text-[var(--color-muted)]">
-                  <span className="font-semibold text-[var(--color-ink)]">Kim için:</span> {stage.bestFor}
+                  <span className="font-semibold text-[var(--color-ink)]">Kim için:</span>{' '}
+                  {editMode ? (
+                    <input
+                      value={stage.bestFor}
+                      onChange={(e) => updateContentField(`growthStages.${index}.bestFor`, e.target.value)}
+                      className="bg-transparent outline-none"
+                    />
+                  ) : (
+                    stage.bestFor
+                  )}
                 </p>
                 <p className="text-[var(--color-muted)]">
-                  <span className="font-semibold text-[var(--color-ink)]">Ne kurulur:</span> {stage.build}
+                  <span className="font-semibold text-[var(--color-ink)]">Ne kurulur:</span>{' '}
+                  {editMode ? (
+                    <input
+                      value={stage.build}
+                      onChange={(e) => updateContentField(`growthStages.${index}.build`, e.target.value)}
+                      className="bg-transparent outline-none"
+                    />
+                  ) : (
+                    stage.build
+                  )}
                 </p>
                 <p className="text-[var(--color-muted)]">
-                  <span className="font-semibold text-[var(--color-ink)]">Sonuç odağı:</span> {stage.outcome}
+                  <span className="font-semibold text-[var(--color-ink)]">Sonuç odağı:</span>{' '}
+                  {editMode ? (
+                    <input
+                      value={stage.outcome}
+                      onChange={(e) => updateContentField(`growthStages.${index}.outcome`, e.target.value)}
+                      className="bg-transparent outline-none"
+                    />
+                  ) : (
+                    stage.outcome
+                  )}
                 </p>
               </div>
 
@@ -53,7 +116,22 @@ export function ServicesSection() {
                 {stage.points.map((point) => (
                   <li key={point} className="flex items-start gap-2 text-sm text-[var(--color-ink)]">
                     <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]" />
-                    <span>{point}</span>
+                    <span>
+                      {editMode ? (
+                        <input
+                          value={point}
+                          onChange={(e) =>
+                            updateContentField(
+                              `growthStages.${index}.points.${stage.points.indexOf(point)}`,
+                              e.target.value
+                            )
+                          }
+                          className="bg-transparent outline-none"
+                        />
+                      ) : (
+                        point
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -63,8 +141,24 @@ export function ServicesSection() {
       </div>
 
       <p className="mt-6 text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-primary-strong)]">
-        {content.servicesSection.cta}
+        {editMode ? (
+          <input
+            value={content.servicesSection.cta}
+            onChange={(e) => updateContentField('servicesSection.cta', e.target.value)}
+            className="bg-transparent outline-none"
+          />
+        ) : (
+          content.servicesSection.cta
+        )}
       </p>
+      {editMode && (
+        <button
+          onClick={saveContent}
+          className="mt-4 rounded bg-green-600 px-4 py-2 text-sm text-white"
+        >
+          Kaydet
+        </button>
+      )}
     </SectionContainer>
   );
 }

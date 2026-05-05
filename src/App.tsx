@@ -24,10 +24,20 @@ import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { submitContactForm } from './utils/contactApi';
 import { logEvent } from './utils/logging';
 
+const AdminApp = lazy(() => import('./admin/AdminApp').then((mod) => ({ default: mod.AdminApp })));
+
 type LeadFormValues = {
   name: string;
   phone: string;
   service: string;
+};
+
+type LeadSource = 'package_card' | 'generic_cta';
+type ToastState = {
+  open: boolean;
+  type: 'success' | 'error';
+  title: string;
+  message: string;
 };
 
 const defaultLeadServiceOptions = [
@@ -43,7 +53,29 @@ const planScopedServiceOptions: Record<string, string[]> = {
   operator: ['Growth Operator', 'Özel Kapsam Değerlendirme'],
 };
 
-const observedSections = ['hero', 'problem', 'system', 'stages', 'creator', 'cases', 'packages', 'process', 'faq', 'contact', 'final-cta'];
+const observedSections = [
+  'hero',
+  'problem',
+  'system',
+  'stages',
+  'creator',
+  'cases',
+  'packages',
+  'process',
+  'faq',
+  'contact',
+  'final-cta',
+];
+const defaultLeadValues: LeadFormValues = { name: '', phone: '', service: '' };
+const defaultToastState: ToastState = { open: false, type: 'success', title: '', message: '' };
+
+function getLeadServiceOptions(plan: PricingPlan | null): string[] {
+  if (!plan) {
+    return defaultLeadServiceOptions;
+  }
+
+  return planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions;
+}
 
 function isPricingPlan(value: unknown): value is PricingPlan {
   if (!value || typeof value !== 'object') {
@@ -59,25 +91,14 @@ function isPricingPlan(value: unknown): value is PricingPlan {
 }
 
 function App() {
-  const AdminApp = lazy(() => import('./admin/AdminApp').then((mod) => ({ default: mod.AdminApp })));
-  const [isAdminRoute, setIsAdminRoute] = useState(
+  const [isAdminPage, setIsAdminPage] = useState(
     typeof window !== 'undefined' && window.location.hash.startsWith('#/admin'),
   );
   const [isLeadModalOpen, setLeadModalOpen] = useState(false);
-  const [contactEmphasized, setContactEmphasized] = useState(false);
+  const [isContactHighlighted, setContactHighlighted] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
-  const [leadSource, setLeadSource] = useState<'package_card' | 'generic_cta'>('generic_cta');
-  const [toastState, setToastState] = useState<{
-    open: boolean;
-    type: 'success' | 'error';
-    title: string;
-    message: string;
-  }>({
-    open: false,
-    type: 'success',
-    title: '',
-    message: '',
-  });
+  const [leadSource, setLeadSource] = useState<LeadSource>('generic_cta');
+  const [toastState, setToastState] = useState<ToastState>(defaultToastState);
 
   const activeSection = useActiveSection(observedSections);
   const scrollTo = useSmoothScroll(86);
@@ -88,11 +109,7 @@ function App() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<LeadFormValues>({
-    defaultValues: {
-      name: '',
-      phone: '',
-      service: '',
-    },
+    defaultValues: defaultLeadValues,
   });
 
   const navigateTo = useCallback(
@@ -100,7 +117,7 @@ function App() {
       scrollTo(id);
 
       if (id === 'contact') {
-        setContactEmphasized(true);
+        setContactHighlighted(true);
       }
 
       logEvent({
@@ -113,16 +130,16 @@ function App() {
   );
 
   const openLeadModal = useCallback(
-    (planCandidate?: PricingPlan | null, source: 'package_card' | 'generic_cta' = 'generic_cta') => {
+    (planCandidate?: PricingPlan | null, source: LeadSource = 'generic_cta') => {
       const plan = isPricingPlan(planCandidate) ? planCandidate : null;
-      const options = plan ? (planScopedServiceOptions[plan.id] ?? defaultLeadServiceOptions) : defaultLeadServiceOptions;
+      const serviceOptions = getLeadServiceOptions(plan);
+      const nextSource: LeadSource = plan ? source : 'generic_cta';
 
       setSelectedPlan(plan);
-      setLeadSource(plan ? source : 'generic_cta');
+      setLeadSource(nextSource);
       reset({
-        name: '',
-        phone: '',
-        service: options[0] ?? '',
+        ...defaultLeadValues,
+        service: serviceOptions[0] ?? '',
       });
       setLeadModalOpen(true);
 
@@ -130,7 +147,7 @@ function App() {
         eventType: 'cta',
         eventName: 'open_lead_modal',
         metadata: {
-          source: plan ? source : 'generic_cta',
+          source: nextSource,
           planId: plan?.id ?? null,
           planName: plan?.name ?? null,
         },
@@ -141,20 +158,20 @@ function App() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      setIsAdminRoute(window.location.hash.startsWith('#/admin'));
+      setIsAdminPage(window.location.hash.startsWith('#/admin'));
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   useEffect(() => {
-    if (!contactEmphasized) {
+    if (!isContactHighlighted) {
       return;
     }
 
-    const timeout = setTimeout(() => setContactEmphasized(false), 1400);
+    const timeout = setTimeout(() => setContactHighlighted(false), 1400);
     return () => clearTimeout(timeout);
-  }, [contactEmphasized]);
+  }, [isContactHighlighted]);
 
   useEffect(() => {
     logEvent({
@@ -216,11 +233,16 @@ function App() {
     }
   };
 
-  const activeLeadServiceOptions = selectedPlan
-    ? (planScopedServiceOptions[selectedPlan.id] ?? defaultLeadServiceOptions)
-    : defaultLeadServiceOptions;
+  const closeLeadModal = () => {
+    setLeadModalOpen(false);
+    setSelectedPlan(null);
+    setLeadSource('generic_cta');
+    reset(defaultLeadValues);
+  };
 
-  if (isAdminRoute) {
+  const activeLeadServiceOptions = getLeadServiceOptions(selectedPlan);
+
+  if (isAdminPage) {
     return (
       <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg)]" />}>
         <AdminApp />
@@ -236,11 +258,11 @@ function App() {
       <Navbar
         activeSection={activeSection}
         onNavigate={navigateTo}
-        onOpenLeadModal={() => openLeadModal(null, 'generic_cta')}
+        onOpenLeadModal={openLeadModal}
       />
 
       <main>
-        <HeroSection onNavigate={navigateTo} onOpenLeadModal={() => openLeadModal(null, 'generic_cta')} />
+        <HeroSection onNavigate={navigateTo} onOpenLeadModal={openLeadModal} />
         <ProblemSection />
         <SystemSection />
         <ServicesSection />
@@ -249,8 +271,8 @@ function App() {
         <PackagesSection onOpenLeadModal={openLeadModal} />
         <ProcessSection />
         <FAQSection />
-        <ContactSection emphasized={contactEmphasized} />
-        <FinalCTASection onOpenLeadModal={() => openLeadModal(null, 'generic_cta')} />
+        <ContactSection emphasized={isContactHighlighted} />
+        <FinalCTASection onOpenLeadModal={openLeadModal} />
       </main>
 
       <Footer onNavigate={navigateTo} />
@@ -258,12 +280,7 @@ function App() {
 
       <Modal
         open={isLeadModalOpen}
-        onClose={() => {
-          setLeadModalOpen(false);
-          setSelectedPlan(null);
-          setLeadSource('generic_cta');
-          reset();
-        }}
+        onClose={closeLeadModal}
         title={selectedPlan ? `${selectedPlan.name} - Growth Fit` : 'Growth Fit Görüşmesi'}
       >
         <form className="space-y-4" onSubmit={handleSubmit(handleLeadSubmit)} noValidate>

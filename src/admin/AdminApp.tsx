@@ -17,7 +17,7 @@ export function AdminApp() {
   const [isAuthed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<AdminTab>('content');
+  const [activeTab, setActiveTab] = useState<AdminTab>('logs');
   const [contentText, setContentText] = useState('');
   const [contentDirty, setContentDirty] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,6 +68,7 @@ export function AdminApp() {
     try {
       await adminLogin(password);
       await loadContent();
+      setActiveTab('logs');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Giriş başarısız.');
     } finally {
@@ -137,7 +138,7 @@ export function AdminApp() {
           <h1 className="text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
             Admin Panel
           </h1>
-          <p className="mt-2 text-sm text-[var(--color-muted)]">İçerik, log ve talepleri buradan yönetebilirsiniz.</p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">Önce logları inceleyin, ardından içerikleri düzenleyin.</p>
         </div>
         <Button
           variant="outline"
@@ -152,15 +153,20 @@ export function AdminApp() {
 
       <div className="mx-auto mt-8 flex max-w-6xl gap-3">
         {([
-          { id: 'content', label: 'İçerik' },
           { id: 'logs', label: 'Loglar' },
-          { id: 'leads', label: 'Teklifler' },
-          { id: 'contacts', label: 'İletişimler' },
+          { id: 'content', label: 'İçerik' },
         ] as { id: AdminTab; label: string }[]).map((tab) => (
           <Button
             key={tab.id}
             variant={activeTab === tab.id ? 'primary' : 'outline'}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              if (tab.id === 'content') {
+                setActiveTab('content');
+                window.open('/', '_blank');
+              } else {
+                setActiveTab(tab.id);
+              }
+            }}
           >
             {tab.label}
           </Button>
@@ -191,6 +197,9 @@ export function AdminApp() {
             </div>
             <p className="mt-3 text-sm text-[var(--color-muted)]">
               İçeriği buradan düzenleyip kaydedebilirsiniz. JSON geçerli olmalıdır.
+            </p>
+            <p className="mt-2 text-xs text-[var(--color-muted)]">
+              İpucu: "İçerik" butonu ile ana sayfayı açıp görsel edit modunda düzenleyebilirsiniz.
             </p>
             <textarea
               className="mt-4 min-h-[420px] w-full rounded-[18px] border border-[var(--color-border-strong)] bg-[#0b1323] p-4 text-xs text-white/80"

@@ -12,10 +12,18 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
-  const { content } = useSiteContent();
+  const { content, editMode, toggleEditMode, updateContentField, saveContent } = useSiteContent();
 
   return (
     <SectionContainer id="hero" className="pt-28 sm:pt-32 md:pt-36">
+      <div className="absolute right-6 top-6 z-50">
+        <button
+          onClick={toggleEditMode}
+          className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
+        >
+          {editMode ? 'Edit Kapat' : 'Edit Aç'}
+        </button>
+      </div>
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <motion.div
           initial={{ y: 18, opacity: 0 }}
@@ -23,20 +31,54 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
           transition={{ duration: 0.42 }}
           className="space-y-7"
         >
-          <Badge className="border-[var(--color-border-strong)] bg-white/8 text-[var(--color-primary)]">{content.hero.badge}</Badge>
+          <Badge className="border-[var(--color-border-strong)] bg-white/8 text-[var(--color-primary)]">
+            {editMode ? (
+              <input
+                value={content.hero.badge}
+                onChange={(e) => updateContentField('hero.badge', e.target.value)}
+                className="bg-transparent text-sm outline-none"
+              />
+            ) : (
+              content.hero.badge
+            )}
+          </Badge>
 
           <div className="space-y-5">
             <h1
               className="max-w-4xl text-4xl leading-[0.92] tracking-[-0.04em] text-[var(--color-ink)] sm:text-5xl md:text-6xl lg:text-7xl"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              {content.hero.title}
+              {editMode ? (
+                <input
+                  value={content.hero.title}
+                  onChange={(e) => updateContentField('hero.title', e.target.value)}
+                  className="w-full bg-transparent text-4xl outline-none"
+                />
+              ) : (
+                content.hero.title
+              )}
               <span className="block bg-[linear-gradient(130deg,var(--color-primary),#e8ddc7_58%,var(--color-accent))] bg-clip-text text-transparent">
-                {content.hero.highlight}
+                {editMode ? (
+                  <input
+                    value={content.hero.highlight}
+                    onChange={(e) => updateContentField('hero.highlight', e.target.value)}
+                    className="w-full bg-transparent text-transparent outline-none"
+                  />
+                ) : (
+                  content.hero.highlight
+                )}
               </span>
             </h1>
             <p className="max-w-2xl text-sm leading-7 text-[var(--color-muted)] sm:text-base md:text-lg md:leading-8">
-              {content.hero.subtitle}
+              {editMode ? (
+                <textarea
+                  value={content.hero.subtitle}
+                  onChange={(e) => updateContentField('hero.subtitle', e.target.value)}
+                  className="w-full bg-transparent outline-none"
+                />
+              ) : (
+                content.hero.subtitle
+              )}
             </p>
           </div>
 
@@ -61,6 +103,14 @@ export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
               <MessageCircle size={18} /> {content.cta.secondary}
             </Button>
           </div>
+          {editMode && (
+            <button
+              onClick={saveContent}
+              className="mt-4 rounded bg-green-600 px-4 py-2 text-sm text-white"
+            >
+              Kaydet
+            </button>
+          )}
 
           <div className="grid gap-3 md:grid-cols-2">
             {content.stats.map((item) => (
