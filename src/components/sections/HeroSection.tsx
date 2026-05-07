@@ -12,18 +12,20 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ onNavigate, onOpenLeadModal }: HeroSectionProps) {
-  const { content, editMode, toggleEditMode, updateContentField, saveContent } = useSiteContent();
+  const { content, editMode, canEditContent, toggleEditMode, updateContentField, saveContent } = useSiteContent();
 
   return (
     <SectionContainer id="hero" className="pt-28 sm:pt-32 md:pt-36">
-      <div className="absolute right-6 top-6 z-50">
-        <button
-          onClick={toggleEditMode}
-          className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
-        >
-          {editMode ? 'Edit Kapat' : 'Edit Aç'}
-        </button>
-      </div>
+      {canEditContent ? (
+        <div className="absolute right-6 top-6 z-50">
+          <button
+            onClick={toggleEditMode}
+            className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
+          >
+            {editMode ? 'Edit Kapat' : 'Edit Aç'}
+          </button>
+        </div>
+      ) : null}
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <motion.div
           initial={{ y: 18, opacity: 0 }}

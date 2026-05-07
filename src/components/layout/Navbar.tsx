@@ -14,7 +14,7 @@ type NavbarProps = {
 
 export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarProps) {
   const [open, setOpen] = useState(false);
-  const { content, editMode, toggleEditMode } = useSiteContent();
+  const { content, editMode, canEditContent, toggleEditMode } = useSiteContent();
 
   const handleNav = (id: string) => {
     onNavigate(id);
@@ -51,7 +51,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
-          {editMode && (
+          {canEditContent && editMode && (
             <button
               onClick={toggleEditMode}
               className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
@@ -59,7 +59,7 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
               Edit Kapat
             </button>
           )}
-          {!editMode && (
+          {canEditContent && !editMode && (
             <button
               onClick={toggleEditMode}
               className="rounded-full bg-black/60 px-3 py-1 text-xs text-white"
@@ -105,12 +105,14 @@ export function Navbar({ activeSection, onNavigate, onOpenLeadModal }: NavbarPro
                   {item.label}
                 </button>
               ))}
-              <button
-                onClick={toggleEditMode}
-                className="mt-2 rounded-2xl px-4 py-3 text-left text-sm font-medium bg-white/6 text-white"
-              >
-                {editMode ? 'Edit Kapat' : 'Edit Aç'}
-              </button>
+              {canEditContent ? (
+                <button
+                  onClick={toggleEditMode}
+                  className="mt-2 rounded-2xl px-4 py-3 text-left text-sm font-medium bg-white/6 text-white"
+                >
+                  {editMode ? 'Edit Kapat' : 'Edit Aç'}
+                </button>
+              ) : null}
               <Button
                 className="mt-2 w-full"
                 onClick={() => {

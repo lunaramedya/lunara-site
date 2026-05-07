@@ -1,4 +1,12 @@
 const TOKEN_KEY = 'lunara_admin_token';
+export const ADMIN_TOKEN_CHANGE_EVENT = 'lunara_admin_token_change';
+
+function notifyAdminTokenChange() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  window.dispatchEvent(new Event(ADMIN_TOKEN_CHANGE_EVENT));
+}
 
 export function getAdminToken() {
   if (typeof window === 'undefined') {
@@ -12,6 +20,7 @@ export function setAdminToken(token: string) {
     return;
   }
   window.localStorage.setItem(TOKEN_KEY, token);
+  notifyAdminTokenChange();
 }
 
 export function clearAdminToken() {
@@ -19,6 +28,7 @@ export function clearAdminToken() {
     return;
   }
   window.localStorage.removeItem(TOKEN_KEY);
+  notifyAdminTokenChange();
 }
 
 async function apiFetch(path: string, options: RequestInit = {}) {
