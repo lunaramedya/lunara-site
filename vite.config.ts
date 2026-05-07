@@ -6,6 +6,8 @@ import { createSession, verifyAdminPassword, requireAdmin } from './server/admin
 import { getContent, setContent, insertEventLog, runQuery } from './server/db';
 import { getRequestMeta } from './server/request';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 function contactApiPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'lunara-contact-api',
@@ -227,6 +229,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    plugins: [react(), tailwindcss(), contactApiPlugin(env)],
+    plugins: [react(), tailwindcss(), contactApiPlugin(env), cloudflare()],
   };
 });

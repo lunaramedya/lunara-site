@@ -41,6 +41,7 @@ import { readJsonBody, submitMailRequest } from './server/contact-mail';
 import { createSession, verifyAdminPassword, requireAdmin } from './server/admin-auth';
 import { getContent, setContent, insertEventLog, runQuery } from './server/db';
 import { getRequestMeta } from './server/request';
+import { cloudflare } from "@cloudflare/vite-plugin";
 function contactApiPlugin(env) {
     return {
         name: 'lunara-contact-api',
@@ -322,6 +323,6 @@ export default defineConfig(function (_a) {
     var mode = _a.mode;
     var env = loadEnv(mode, process.cwd(), '');
     return {
-        plugins: [react(), tailwindcss(), contactApiPlugin(env)],
+        plugins: [react(), tailwindcss(), contactApiPlugin(env), cloudflare()],
     };
 });
